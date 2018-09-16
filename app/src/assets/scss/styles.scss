@@ -1,0 +1,56 @@
+@import './colors.scss';
+@import url('https://fonts.googleapis.com/css?family=Arimo|Alex+Brush');
+
+body{
+  font-family: 'Arimo', sans-serif;
+}
+
+h1{
+  display: block;
+  text-align: center;
+  text-transform: capitalize;
+  color: $header_text;
+  border-bottom: solid 1px $primary_border;
+  padding: 20px;
+  margin: 0px 200px 50px;
+  font-size: 1.7rem;
+}
+
+.btn{
+  border-radius: 0px;
+  &.btn-primary{
+    background-color: $btn_primary;
+    border: solid 1px $btn_primary;
+    &:hover{
+      background-color:$btn_primary_hover;
+    }
+  }
+  &.btn-secondary{
+    background-color: $btn-secondary;
+    color: $primary_text;
+    border: solid 1px $primary_text;
+    &:hover{
+      background-color:$btn_secondary_hover;
+    }
+  }
+}
+
+.table{
+  border: 1px solid $primary_border;
+  thead{
+    tr{
+      th{
+        background-color: $table_header;
+        color: $reversed_text;
+        border-bottom: 1px solid $primary_border;
+        border-top: 1px solid $primary_border;
+        &+th{
+          border-left: 1px solid $primary_border;
+        }
+      }
+    }
+  }
+  td + td { 
+    border-left: 1px solid $primary_border; 
+  }
+}

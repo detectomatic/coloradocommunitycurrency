@@ -1,5 +1,11 @@
 import React from 'react';
 import * as utils from 'web3-utils';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '~/assets/scss/styles.scss';
+import Header from '~/Components/Header/Header';
+import Subheader from '~/Components/Header/Subheader';
+import TransactionTable from '~/Components/TransactionTable/TransactionTable';
+
 export default class App extends React.Component{
   constructor(){
     super();
@@ -55,12 +61,16 @@ export default class App extends React.Component{
   render(){
     return(
       <div>
-        <h1>DCOIN Dashboard</h1>
-        <button onClick={this.sendEther.bind(this)}>Send 2 Ether</button>
-        <button onClick={this.readBalance.bind(this)}>Read Balance</button>
+        <Header />
+        <Subheader />
+        <TransactionTable />
+        
+        {/* <h1>DCOIN Dashboard</h1>
+        <button className="btn btn-primary" onClick={this.sendEther.bind(this)}>Send 2 Ether</button>
+        <button className="btn btn-secondary" onClick={this.readBalance.bind(this)}>Read Balance</button>
         <div>
           {this.state.balance}
-        </div>
+        </div> */}
       </div>
     );
   }

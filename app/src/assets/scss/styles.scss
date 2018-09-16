@@ -50,7 +50,17 @@ h1{
       }
     }
   }
-  td + td { 
-    border-left: 1px solid $primary_border; 
+  tbody{
+    tr{
+      &:nth-child(odd){
+        background-color: $table_row;
+      }
+      td{
+        background-color: transparent;
+        &+ td { 
+          border-left: 1px solid $primary_border; 
+        }
+      }
+    }
   }
 }

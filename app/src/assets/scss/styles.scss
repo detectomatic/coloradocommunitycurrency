@@ -1,8 +1,8 @@
 @import './colors.scss';
-@import url('https://fonts.googleapis.com/css?family=Arimo|Alex+Brush');
+@import url('https://fonts.googleapis.com/css?family=Hind+Siliguri:400,700|Alex+Brush');
 
 body{
-  font-family: 'Arimo', sans-serif;
+  font-family: 'Hind Siliguri', sans-serif;
 }
 
 h1{
@@ -47,6 +47,9 @@ h1{
         &+th{
           border-left: 1px solid $primary_border;
         }
+        &:last-child{
+          text-align:right;
+        }
       }
     }
   }
@@ -56,9 +59,49 @@ h1{
         background-color: $table_row;
       }
       td{
+        color: $light_text;
         background-color: transparent;
         &+ td { 
           border-left: 1px solid $primary_border; 
+        }
+        span{
+          display: inline-block;
+          &.time_container{
+            margin-left:10px;
+          }
+          &:last-child{
+            &:not(.time_container){
+              float: right;
+            }
+          }
+          &.copy_container{
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            text-align: center;
+            border: solid 1px transparent;
+            transition: background-color .25s ease-in-out;
+            transition: color .25s ease-in-out;
+            cursor: pointer;
+            &:hover{
+              background-color: $secondary_splash;
+              color: $reversed_text;
+              border-color: $reversed_text;
+            }
+          }
+          &.address_container{
+            transition: color .25s ease-in-out;
+            cursor: pointer;
+            &:hover{
+              color: $secondary_splash;
+            }
+          }
+        }
+        strong{
+          display: inline-block;
+          &:last-child{
+            float: right;
+          }
         }
       }
     }

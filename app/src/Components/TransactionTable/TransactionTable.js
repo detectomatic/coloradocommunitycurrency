@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaClipboard } from 'react-icons/fa';
+import { MdContentCopy } from 'react-icons/md';
 
 export default class TransactionTable extends React.Component{
   render(){
@@ -18,28 +18,28 @@ export default class TransactionTable extends React.Component{
             <tbody>
               <tr>
                 <td>
-                  <span>9/15/18</span>
-                  <span>8:22 PM</span>
+                  <strong>9/15/18</strong>
+                  <span className="time_container">8:22 PM</span>
                 </td>
                 <td>
-                  <span>0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B</span>
-                  <span><FaClipboard /></span>
+                  <span className="address_container">0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B</span>
+                  <span className="copy_container"><MdContentCopy /></span>
                 </td>
                 <td>
-                  <span>$86.24</span>
+                  <strong>$86.24</strong>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <span>9/15/18</span>
-                  <span>8:22 PM</span>
+                  <strong>9/15/18</strong>
+                  <span className="time_container">8:22 PM</span>
                 </td>
                 <td>
-                  <span>0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B</span>
-                  <span><FaClipboard /></span>
+                  <span className="address_container">0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B</span>
+                  <span className="copy_container"><MdContentCopy /></span>
                 </td>
                 <td>
-                  <span>$86.24</span>
+                  <strong>$86.24</strong>
                 </td>
               </tr>
             </tbody>

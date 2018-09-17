@@ -3,14 +3,15 @@ $primary_background: #ffffff;
 $header_background: #002868;
 
 // Text
-$primary_text: #4A4A4A;
+$primary_text: #3c3c44;
+$light_text: #50505b;
 $header_text: #002868;
 $active_text: #FFD700;
 $reversed_text: #ffffff;
 
 // Splash
-$splash_1: #BF0A30;
-$splash_2: #FFD700;
+$primary_splash: #BF0A30;
+$secondary_splash: #FFD700;
 
 // Buttons
 $btn_primary: #002868;
@@ -19,7 +20,7 @@ $btn_primary_hover: #294368;
 $btn_secondary_hover: #F5F5F5;
 
 // Table
-$table_row: rgba(0,40,104, .15);
+$table_row: rgba(0,40,104, .1);
 $table_header: rgba(0,40,104, .50);
 
 // Borders

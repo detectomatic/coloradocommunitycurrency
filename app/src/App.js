@@ -10,7 +10,18 @@ export default class App extends React.Component{
   constructor(){
     super();
     this.state = {
-      balance : ''
+      balance : '',
+      dummyTransactions : [{
+        timestamp : 1537220287303,
+        address : '0x895B758229aFF6C0f95146A676bBF579aD7636aa',
+        amount : 50.26
+      },
+      {
+        timestamp : 1537220375766,
+        address : '0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B',
+        amount : 10.26
+        
+      }]
     }
   }
   // Initialize Web 3 to communicate with the blockchain
@@ -63,7 +74,7 @@ export default class App extends React.Component{
       <div>
         <Header />
         <Subheader />
-        <TransactionTable />
+        <TransactionTable dummyTransactions={this.state.dummyTransactions} />
         
         {/* <h1>DCOIN Dashboard</h1>
         <button className="btn btn-primary" onClick={this.sendEther.bind(this)}>Send 2 Ether</button>

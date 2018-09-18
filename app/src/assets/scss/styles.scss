@@ -90,10 +90,11 @@ h1{
             }
           }
           &.address_container{
-            transition: color .25s ease-in-out;
+            transition: border-bottom .25s ease-in-out;
+            border-bottom: solid 1px transparent;
             cursor: pointer;
             &:hover{
-              color: $secondary_splash;
+              border-bottom: solid 1px $secondary_splash;
             }
           }
         }

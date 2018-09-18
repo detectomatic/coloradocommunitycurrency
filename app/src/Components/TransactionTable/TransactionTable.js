@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 
 export default class TransactionTable extends React.Component{
@@ -11,7 +11,8 @@ export default class TransactionTable extends React.Component{
     dummy.select();
     document.execCommand("copy");
     document.body.removeChild(dummy);
-
+    this.setState(()=>({addressCopied : true}));
+    this.props.createNotification('success', 'Address Copied!');
   }
 
   renderTransactionRows(){

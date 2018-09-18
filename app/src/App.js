@@ -5,6 +5,8 @@ import '~/assets/scss/styles.scss';
 import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
 import TransactionTable from '~/Components/TransactionTable/TransactionTable';
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 export default class App extends React.Component{
   constructor(){
@@ -64,6 +66,22 @@ export default class App extends React.Component{
 
     });
   }
+  createNotification(type, message){
+    switch (type) {
+      case 'info':
+        NotificationManager.info(message);
+        break;
+      case 'success':
+        NotificationManager.success(message, 'Success!', 1200);
+        break;
+      case 'warning':
+        NotificationManager.warning(message, 'Close after 3000ms', 3000);
+        break;
+      case 'error':
+        NotificationManager.error(message, 'Click me!', 3000);
+        break;
+    }
+  }
   
   componentWillMount(){
     this.initWeb3();
@@ -74,8 +92,8 @@ export default class App extends React.Component{
       <div>
         <Header />
         <Subheader />
-        <TransactionTable dummyTransactions={this.state.dummyTransactions} />
-        
+        <TransactionTable createNotification={this.createNotification.bind(this)} dummyTransactions={this.state.dummyTransactions} />
+        <NotificationContainer />
         {/* <h1>DCOIN Dashboard</h1>
         <button className="btn btn-primary" onClick={this.sendEther.bind(this)}>Send 2 Ether</button>
         <button className="btn btn-secondary" onClick={this.readBalance.bind(this)}>Read Balance</button>

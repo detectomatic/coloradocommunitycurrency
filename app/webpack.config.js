@@ -60,7 +60,10 @@ module.exports = {
         use : ['json-loader']
         
       },
-      { test: /\.(woff)(\?[a-z0-9]+)?$/, loader: 'file-loader?name=[name].[ext]&publicPath=../../&outputPath=assets/font/' },
+      { 
+        test: /.(ttf|eot|svg|woff(2)?)(\S+)?$/,
+        loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
+      },
     ],
   },
   plugins,

@@ -13,6 +13,7 @@ export default class App extends React.Component{
     super();
     this.state = {
       balance : '',
+      numTransactions : null,
       dummyTransactions : [{
         timestamp : 1537220287303,
         address : '0x895B758229aFF6C0f95146A676bBF579aD7636aa',
@@ -39,7 +40,7 @@ export default class App extends React.Component{
     }
 
     this.web3 = new Web3(this.web3Provider);
-    console.log('accounts',this.web3.eth.accounts);
+    console.log(this.web3.eth.accounts);
   }
 
   sendEther(){
@@ -65,6 +66,13 @@ export default class App extends React.Component{
     }
 
     });
+    this.web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
+      console.log('D',data);
+    });
+  }
+
+  readTransactions(){
+    this.web3.eth.getTransactionsByAccount();
   }
   createNotification(type, message){
     switch (type) {
@@ -94,12 +102,12 @@ export default class App extends React.Component{
         <Subheader />
         <TransactionTable createNotification={this.createNotification.bind(this)} dummyTransactions={this.state.dummyTransactions} />
         <NotificationContainer />
-        {/* <h1>DCOIN Dashboard</h1>
+        <h1>DCOIN Dashboard</h1>
         <button className="btn btn-primary" onClick={this.sendEther.bind(this)}>Send 2 Ether</button>
         <button className="btn btn-secondary" onClick={this.readBalance.bind(this)}>Read Balance</button>
         <div>
           {this.state.balance}
-        </div> */}
+        </div>
       </div>
     );
   }

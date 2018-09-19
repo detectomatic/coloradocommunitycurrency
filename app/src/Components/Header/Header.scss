@@ -1,0 +1,58 @@
+@import "~/assets/scss/colors.scss";
+header{
+  background-color: $header_background;
+  display: flex;
+  div.logo{
+    padding-left:20px;
+    flex: 1;
+    img{
+      width: 172px;
+    }
+  }
+  ul.nav{
+    flex: 1.5;
+    justify-content: flex-end;
+    li.nav-item{
+      a{
+        color: $reversed_text;
+        line-height: 50px;
+        &:hover{
+          color: $active_text !important;
+        }
+      }
+      span.account{
+        position:relative;
+        line-height: 50px;
+        > a{
+          position:relative;
+          display:inline-block;
+          width:30px;
+          height:30px;
+          font-size:1.6em;
+          vertical-align: middle;
+          color: $reversed_text;
+          &:hover{
+            color: $active_text !important;
+          }
+          svg{
+              position:absolute;
+              top:50%;
+              left:50%;
+              margin-left:-7px;
+              margin-top:-7px;
+          }
+        }
+  
+      }
+      &:last-child{
+        padding-right: 20px;
+      }
+    }
+  }
+}
+div.subtitle{
+  color: $primary_text;
+  font-family: 'Alex Brush', serif;
+  font-size: 1.3rem;
+  padding: 10px 20px;
+}

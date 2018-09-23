@@ -1,8 +1,6 @@
 // REACT
 import React from 'react';
 import { Link } from 'react-router-dom';
-// LIBRARIES
-
 // COMMON
 import { register } from '~/common/loginService';
 import history from '~/common/history';
@@ -108,8 +106,7 @@ export default class Register extends React.Component{
             <div className="page-wrapper form-page register-page">
                 <section className="title-section">
                     <div className="subsection">
-                        <h1>Assemble Your Team</h1>
-                        <p>Register Account</p>
+                        <h1>Create New Account</h1>
                     </div>
                 </section>
                 <section className="alert-section">
@@ -157,8 +154,6 @@ export default class Register extends React.Component{
                             </div>
                         </div>
                     </form>
-                </section>
-                <section className="bottom-section">
                 </section>
             </div>
         );

@@ -41,9 +41,13 @@ export default class TransactionTable extends React.Component{
 
   render(){
     return(
-      <section>
-        <h1>Transaction History</h1>
-        <div>
+      <div className="page-wrapper transaction-page">
+        <section className="title-section">
+            <div className="subsection">
+                <h1>Latest Transactions</h1>
+            </div>
+        </section>
+        <section className="table-section">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -56,9 +60,9 @@ export default class TransactionTable extends React.Component{
               {this.renderTransactionRows()}
             </tbody>
           </table>
-        </div>
+        </section>
         <ReactTooltip />
-      </section>
+      </div>
     );
   }
 }

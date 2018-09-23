@@ -32,6 +32,15 @@ export default class App extends React.Component{
       }]
     }
   }
+
+  // Helper method to set state and call a callback function if it exists
+  // Used for some child components to update the state without throwing a react memory leak error
+  modifyAppState(state, cb){
+    this.setState(()=>(state), ()=>{
+      if(cb) cb();
+    });
+  }
+
   // Initialize Web 3 to communicate with the blockchain
   initWeb3(){
     // Check if Web 3 has been injected by the browser
@@ -139,7 +148,7 @@ export default class App extends React.Component{
       <div>
         <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} />
+        <Content modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} />
         <Footer />
       </div>
     );

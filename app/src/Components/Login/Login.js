@@ -104,7 +104,7 @@ export default class Login extends React.Component{
             <div className="page-wrapper form-page login-page">
                 <section className="title-section">
                     <div className="subsection">
-                        <h1>Login</h1>
+                        <h1>Access Your Account</h1>
                     </div>
                 </section>
                 <section className="alert-section">
@@ -135,8 +135,6 @@ export default class Login extends React.Component{
                             </div>
                         </div>
                     </form>
-                </section>
-                <section className="bottom-section">
                 </section>
             </div>
         );

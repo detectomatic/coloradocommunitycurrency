@@ -5,6 +5,25 @@ import './header.scss';
 
 export default class Nav extends React.Component{
 
+  constructor(){
+    super();
+    this.state = {
+        open: false,
+    };
+}
+
+  // Sets state that toggles the open / close of the account subnav
+  handleToggle() {
+      return this.setState(state => ({ open: !this.state.open }));
+  };
+
+  // Handles logging out and navigating to account page
+  handleLogout(e){
+      e.preventDefault();
+      this.handleToggle();
+      this.props.handleLogin(false);
+  }
+
   // If logged in, render account button, otherwise render getting started button
   renderGettingStarted(){
     if(this.props.loggedIn){

@@ -4,8 +4,10 @@
 body{
   font-family: 'Hind Siliguri', sans-serif;
 }
-
 h1{
+  border-bottom: solid 1px $primary_border;
+}
+h2{
   display: block;
   text-align: center;
   text-transform: capitalize;
@@ -37,74 +39,106 @@ h1{
     width:100%;
   }
 }
+.page-wrapper{
+  background-color: $primary_background;
+}
+section{
 
-.table{
-  border: 1px solid $primary_border;
-  thead{
-    tr{
-      th{
-        background-color: $table_header;
-        color: $reversed_text;
-        border-bottom: 1px solid $primary_border;
-        border-top: 1px solid $primary_border;
-        &+th{
-          border-left: 1px solid $primary_border;
-        }
-        &:last-child{
-          text-align:right;
-        }
-      }
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  &.title-section{
+    text-align: center;
+    h1{
+        margin-bottom:0px;
+        font-size:3em;
+        text-align: center;
+        text-transform: capitalize;
+        padding: 20px 10px;
+        color: $header_text;
+    }
+    p{
+        color:$light_text;
     }
   }
-  tbody{
-    tr{
-      &:nth-child(odd){
-        background-color: $table_row;
+
+  &.table-section{
+    display:flex;
+    justify-content: center;
+    padding: 20px;
+    .table{
+      width:80%;
+      max-width:1024px;
+      border: 1px solid $primary_border;
+      background-color: $secondary_background;
+      margin-bottom:0px;
+      thead{
+        tr{
+          th{
+            background-color: $table_header;
+            color: $reversed_text;
+            border-bottom: 1px solid $primary_border;
+            border-top: 1px solid $primary_border;
+            &+th{
+              border-left: 1px solid $primary_border;
+            }
+            &:last-child{
+              text-align:right;
+            }
+          }
+        }
       }
-      td{
-        color: $light_text;
-        background-color: transparent;
-        &+ td { 
-          border-left: 1px solid $primary_border; 
-        }
-        span{
-          display: inline-block;
-          &.time_container{
-            margin-left:10px;
+      tbody{
+        tr{
+          &:nth-child(odd){
+            background-color: $table_row;
           }
-          &:last-child{
-            &:not(.time_container){
-              float: right;
+          td{
+            color: $light_text;
+            background-color: transparent;
+            &+ td { 
+              border-left: 1px solid $primary_border; 
             }
-          }
-          &.copy_container{
-            width: 24px;
-            height: 24px;
-            border-radius: 2px;
-            text-align: center;
-            border: solid 1px transparent;
-            transition: background-color .25s ease-in-out;
-            transition: color .25s ease-in-out;
-            cursor: pointer;
-            &:hover{
-              background-color: $secondary_splash;
-              color: $reversed_text;
-              border-color: $reversed_text;
+            span{
+              display: inline-block;
+              &.time_container{
+                margin-left:10px;
+              }
+              &:last-child{
+                &:not(.time_container){
+                  float: right;
+                }
+              }
+              &.copy_container{
+                width: 24px;
+                height: 24px;
+                border-radius: 2px;
+                text-align: center;
+                border: solid 1px transparent;
+                transition: background-color .25s ease-in-out;
+                transition: color .25s ease-in-out;
+                cursor: pointer;
+                &:hover{
+                  background-color: $secondary_splash;
+                  color: $reversed_text;
+                  border-color: $reversed_text;
+                }
+              }
+              &.address_container{
+                transition: border-bottom .25s ease-in-out;
+                border-bottom: solid 1px transparent;
+                cursor: pointer;
+                &:hover{
+                  border-bottom: solid 1px $secondary_splash;
+                }
+              }
             }
-          }
-          &.address_container{
-            transition: border-bottom .25s ease-in-out;
-            border-bottom: solid 1px transparent;
-            cursor: pointer;
-            &:hover{
-              border-bottom: solid 1px $secondary_splash;
+            strong{
+              display: inline-block;
+              &:last-child{
+                float: right;
+              }
             }
-          }
-        }
-        strong{
-          display: inline-block;
-          &:last-child{
-            float: right;
           }
         }
       }

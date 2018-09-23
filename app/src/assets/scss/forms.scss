@@ -1,55 +1,41 @@
 @import "~/assets/scss/colors.scss";
 
 div.page-wrapper.form-page{
-    display:grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto auto auto 220px;
-    min-height:95vh;
-    place-items: stretch;
     
     section{
-        &.title-section{
-            background-color: $secondary_background;
-            text-align: center;
-            h1{
-                margin-bottom:0px;
-                font-size:4em;
-            }
-            p{
-                color:$light_text;
-            }
-        }
+
         &.form-section{
             margin-top:50px;
             margin-bottom:50px;
-            width:80%;
-            justify-self:center;
-            border: solid 1px $primary_border;
-            padding:20px;
-            .input_container{
-                margin-bottom:15px;
-
-                label{
-                    strong{
-                        font-size: 1.6em;
-                        color: $light_text;
+            
+            
+            form{
+                background-color: $secondary_background;
+                width:80%;
+                max-width:1024px;
+                border: solid 1px $primary_border;
+                padding:20px;
+                .input_container{
+                    margin-bottom:15px;
+    
+                    label{
+                        strong{
+                            font-size: 1.6em;
+                            color: $light_text;
+                        }
+                    }
+                }
+                .register_button_container{
+                    margin-top:30px;
+                    text-align:center;
+                    div.sign_in,
+                    div.register_account{
+                        font-size:.8rem;
+                        margin-top:20px;
                     }
                 }
             }
-            .register_button_container{
-                margin-top:30px;
-                text-align:center;
-                div.sign_in,
-                div.register_account{
-                    font-size:.8rem;
-                    margin-top:20px;
-                }
-            }
-        }
-
-        &.bottom-section{
-            background-color: $secondary_background;
+            
         }
     }
-
 }

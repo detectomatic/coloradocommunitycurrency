@@ -4,9 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '~/assets/scss/styles.scss';
 import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
-import TransactionTable from '~/Components/TransactionTable/TransactionTable';
+import Content from '~/Components/Content';
+import Footer from '~/Components/Footer/Footer';
 import 'react-notifications/lib/notifications.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 
 export default class App extends React.Component{
   constructor(){
@@ -100,14 +101,8 @@ export default class App extends React.Component{
       <div>
         <Header />
         <Subheader />
-        <TransactionTable createNotification={this.createNotification.bind(this)} dummyTransactions={this.state.dummyTransactions} />
-        <NotificationContainer />
-        <h1>DCOIN Dashboard</h1>
-        <button className="btn btn-primary" onClick={this.sendEther.bind(this)}>Send 2 Ether</button>
-        <button className="btn btn-secondary" onClick={this.readBalance.bind(this)}>Read Balance</button>
-        <div>
-          {this.state.balance}
-        </div>
+        <Content balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} />
+        <Footer />
       </div>
     );
   }

@@ -14,10 +14,21 @@ header{
     justify-content: flex-end;
     li.nav-item{
       a{
-        color: $reversed_text;
+        color: $very_light_text;
         line-height: 50px;
         &:hover{
           color: $active_text !important;
+        }
+        &.btn{
+          color: $reversed_text;
+          background-color: $header_background;
+          line-height: 20px;
+          margin-top: 14px;
+          border: solid 1px $reversed_border;
+          &:hover{
+            
+            
+          }
         }
       }
       span.account{

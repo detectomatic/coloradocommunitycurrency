@@ -16,7 +16,7 @@ h1{
   font-size: 1.7rem;
 }
 
-.btn{
+.btn, .btn-large, .btn-small{
   border-radius: 0px;
   &.btn-primary{
     background-color: $btn_primary;
@@ -32,6 +32,9 @@ h1{
     &:hover{
       background-color:$btn_secondary_hover;
     }
+  }
+  &.btn-block{
+    width:100%;
   }
 }
 

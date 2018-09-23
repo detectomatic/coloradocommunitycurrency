@@ -35,7 +35,7 @@ export default class Nav extends React.Component{
     return(
       <ul className="nav">
         <li className="nav-item">
-          <a className="nav-link active" href="/about">About</a>
+          <a className="nav-link" href="/about">About</a>
         </li>
         <li className="nav-item">
           <a className="nav-link" href="/contact">Contact</a>

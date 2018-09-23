@@ -16,8 +16,12 @@ header{
       a{
         color: $very_light_text;
         line-height: 50px;
+        transition: color .25s ease-in-out;
         &:hover{
           color: $active_text !important;
+        }
+        &.active{
+          color: $reversed_text;
         }
         &.btn{
           color: $reversed_text;

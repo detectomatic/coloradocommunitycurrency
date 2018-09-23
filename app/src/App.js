@@ -1,18 +1,22 @@
 import React from 'react';
 import * as utils from 'web3-utils';
+import { NotificationManager } from 'react-notifications';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '~/assets/scss/styles.scss';
 import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
+import { login, logout, loggedIn, accountDetails } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
-import { NotificationManager } from 'react-notifications';
+
+
 
 export default class App extends React.Component{
   constructor(){
     super();
     this.state = {
+      loggedIn : false,
       balance : '',
       numTransactions : null,
       dummyTransactions : [{
@@ -75,6 +79,40 @@ export default class App extends React.Component{
   readTransactions(){
     this.web3.eth.getTransactionsByAccount();
   }
+
+  // Handle login to node backend on google cloud
+  handleLogin(doLogin, email, password){
+    //console.log(email, password);
+    if(doLogin){
+      return login({ email, password })
+      .then((data)=>{
+        if(data.error){
+          console.log('ERROR - ', data.error);
+          return;
+        }
+        //console.log('THE DATA', data);
+        return data;
+      })
+      .catch((error)=>{
+        console.log('log out failure', error);
+      });
+      
+    }else if(doLogin === false){
+      return logout()
+      .then((data)=>{
+        //console.log('Data', data);
+        if(data.error){
+          console.log('ERROR - ', data.error);
+          return;
+        }
+        this.setState(()=>({loggedIn:false, account: ''}), ()=>{ setTimeout(()=>(history.push(`${APP_ROOT}login`)),1000);});
+      })
+      .catch((error)=>{
+        console.log('log out failure', error);
+      });
+    }
+  }
+
   createNotification(type, message){
     switch (type) {
       case 'info':
@@ -99,7 +137,7 @@ export default class App extends React.Component{
   render(){
     return(
       <div>
-        <Header />
+        <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
         <Content balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} />
         <Footer />

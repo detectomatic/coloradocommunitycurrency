@@ -12,7 +12,7 @@ export default class TransactionTable extends React.Component{
     document.execCommand("copy");
     document.body.removeChild(dummy);
     this.setState(()=>({addressCopied : true}));
-    this.props.createNotification('success', 'Address Copied!');
+    this.props.createNotification('success', 'Address Copied');
   }
 
   renderTransactionRows(){

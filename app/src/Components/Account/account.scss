@@ -1,0 +1,27 @@
+@import "~/assets/scss/colors.scss";
+
+.subsection-allies{
+    ul{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        li.ally-data{
+            border-bottom: solid 1px $primary_border;
+            line-height: 30px;
+
+            strong{
+                display:inline-block;
+                margin-right: 10px;
+                
+            }
+            span{
+                display:inline-block;
+                &.ally-value{
+                    margin-right:25px;
+                }
+            }
+
+        }
+    }
+}

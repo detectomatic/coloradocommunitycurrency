@@ -1,6 +1,7 @@
 import React from 'react';
 import * as utils from 'web3-utils';
 import { NotificationManager } from 'react-notifications';
+import history from '~/common/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '~/assets/scss/styles.scss';
 import Header from '~/Components/Header/Header';
@@ -35,7 +36,7 @@ export default class App extends React.Component{
 
   // Helper method to set state and call a callback function if it exists
   // Used for some child components to update the state without throwing a react memory leak error
-  modifyAppState(state, cb){
+  modifyAppState(state, cb){console.log('SS', state);
     this.setState(()=>(state), ()=>{
       if(cb) cb();
     });

@@ -50,13 +50,13 @@ export default class Login extends React.Component{
                 });
                 this.handleErrors(errors);
             }else{
-               
+                console.log('li1',this.props.loggedIn);
                 this.props.modifyAppState({
                     loggedIn : true, 
                     account : data.publicEthKey
                 }, () =>{
                     setTimeout(()=>{
-                        //history.push(`${APP_ROOT}user-collection`);
+                        history.push(`${APP_ROOT}transactions`);
                     },1000);
                 });
             } 
@@ -99,7 +99,7 @@ export default class Login extends React.Component{
         
     }
 
-    render(){
+    render(){console.log('UPDATE', this.props.loggedIn);
         return(
             <div className="page-wrapper form-page login-page">
                 <section className="title-section">

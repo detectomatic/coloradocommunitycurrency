@@ -45,8 +45,15 @@ export default class Register extends React.Component{
                     });
                     this.handleErrors(errors);
                 }else{
-                    this.setState(()=>({successfulAccountCreation: true}), () => {
-                        setTimeout(()=>(history.push(`${APP_ROOT}user-collection`)),1500);
+                    this.setState(()=>({successfulAccountCreation: true}));
+
+                    this.props.modifyAppState({
+                        loggedIn : true, 
+                        account : data.publicEthKey
+                    }, () =>{
+                        setTimeout(()=>{
+                            history.push(`${APP_ROOT}`);
+                        },1000);
                     });
                 }
                 
@@ -141,7 +148,7 @@ export default class Register extends React.Component{
                         </div>
                         <div className="input_container">
                             <label>
-                                <strong>Public Key (optional):</strong>
+                                <strong>Wallet Address (optional):</strong>
                                 <input name="publicEthKey" type="text" value={this.state.publicEthKey} onChange={this.handleChange.bind(this)} placeholder="Enter Ethereum Wallet Public Key" minLength="42" maxLength="42" />
                             </label>
                         </div>

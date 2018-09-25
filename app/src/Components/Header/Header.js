@@ -11,7 +11,7 @@ export default class Header extends React.Component{
         <div className="logo">
           <img src={Logo} />
         </div>
-        <Nav />
+        <Nav loggedIn={ this.props.loggedIn } handleLogin={ this.props.handleLogin } />
       </header>
     );
   }

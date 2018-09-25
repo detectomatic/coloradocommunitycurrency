@@ -21,7 +21,7 @@ export default class Content extends React.Component{
               <Route path={`${APP_ROOT}transactions`} component={() => ( <TransactionTable createNotification={this.props.createNotification} dummyTransactions={this.props.dummyTransactions} /> )} />
               <Route path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} dummyTransactions={this.props.dummyTransactions} /> )} />
               <Route path={`${APP_ROOT}login`} component={() => ( <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} /> )} />
-              <Route path={`${APP_ROOT}register`} component={() => ( <Register /> )} />
+              <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
               <Route path={`${APP_ROOT}demo`} component={() => ( <Demo sendEther={this.props.sendEther} readBalance={this.props.readBalance} />)} />
           </Switch>
         </div>

@@ -1,0 +1,41 @@
+@import "~/assets/scss/colors.scss";
+
+div.page-wrapper.form-page{
+    
+    section{
+
+        &.form-section{
+            margin-top:50px;
+            margin-bottom:50px;
+            
+            
+            form{
+                background-color: $secondary_background;
+                width:80%;
+                max-width:1024px;
+                border: solid 1px $primary_border;
+                padding:20px;
+                .input_container{
+                    margin-bottom:15px;
+    
+                    label{
+                        strong{
+                            font-size: 1.6em;
+                            color: $light_text;
+                        }
+                    }
+                }
+                .register_button_container{
+                    margin-top:30px;
+                    text-align:center;
+                    div.sign_in,
+                    div.register_account{
+                        font-size:.8rem;
+                        margin-top:20px;
+                    }
+                }
+            }
+            
+        }
+    }
+}

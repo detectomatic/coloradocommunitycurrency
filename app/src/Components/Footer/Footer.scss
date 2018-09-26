@@ -1,0 +1,30 @@
+@import "~/assets/scss/colors.scss";
+
+footer{
+  background-color: $footer_background;
+  min-height: 300px;
+  color: $reversed_text;
+  text-align:center;
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction:column;
+  .footer_title{
+    display:block;
+    font-size: 1.5rem;
+    
+
+    a{
+      color: $very_light_text;
+      text-decoration: none;
+      span{
+        font-family: 'Alex Brush', cursive;
+      }
+    }
+  }
+  .footer_copyright{
+    display:block;
+    color: $very_light_text;
+  }
+}

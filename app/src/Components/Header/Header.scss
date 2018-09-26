@@ -1,0 +1,133 @@
+@import "~/assets/scss/colors.scss";
+header{
+  background-color: $header_background;
+  display: flex;
+  div.logo{
+    padding-left:20px;
+    flex: 1;
+    img{
+      width: 172px;
+    }
+  }
+  nav.nav-wrapper{
+    background-color:transparent;
+    ul.nav{
+      flex: 1.5;
+      justify-content: flex-end;
+      li.nav-item{
+        > a{
+          color: $very_light_text;
+          line-height: 50px;
+          transition: color .25s ease-in-out;
+          &:hover{
+            color: $active_text !important;
+          }
+          &.active{
+            color: $reversed_text;
+          }
+          &.btn{
+            color: $reversed_text;
+            background-color: $header_background;
+            line-height: 20px;
+            margin-top: 14px;
+            border: solid 1px $reversed_border;
+            &:hover{
+              
+              
+            }
+          }
+        }
+        
+        span.account{
+          position:relative;
+          line-height: 50px;
+          cursor: pointer;
+          > a{
+            position:relative;
+            display:inline-block;
+            width:30px;
+            height:30px;
+            font-size:1.6em;
+            vertical-align: middle;
+            color: $reversed_text;
+            &:hover{
+              color: $active_text !important;
+            }
+            svg{
+                position:absolute;
+                top:50%;
+                left:50%;
+                margin-left:-7px;
+                margin-top:-7px;
+            }
+          }
+          div.account_dropdown{
+            position:absolute;
+            right:-20px;
+            top:54px;
+            background-color: $footer_background;
+            box-shadow: 0px 2px 4px gray;
+            &.dropdown_closed{
+                display:none;
+            }
+            ul{
+              list-style:none;
+              padding: 0px;
+              min-width: 150px;
+              text-align:right;
+                > li{
+                  border-bottom: solid 1px white;
+                    a{
+                        line-height:32px;
+                        color:$reversed_text;
+                        cursor:pointer;
+                        &:hover{
+                            background-color: $secondary_background;
+                            color:$header_text;
+                        }
+                    }
+                  &:last-child{
+                    border-bottom: none;
+                  }
+                }
+            }
+            div.arrow_up {
+                width: 0; 
+                height: 0; 
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid $header_background;
+                position:absolute;
+                top:-5px;
+                right:20px;
+            }
+  
+          }
+        }
+        &:last-child{
+          padding-right: 20px;
+        }
+      }
+    }
+    .opaque-backdrop{
+      background:rgba(255,255,255,.6);
+      position:fixed;
+      top:0px;
+      left:0px;
+      width:100%;
+      height:100%;
+      &.backdrop-visible{
+          display : block;
+      }
+      &.backdrop-hidden{
+          display : none;
+      }
+    }
+  }
+}
+div.subtitle{
+  color: $primary_text;
+  font-family: 'Alex Brush', serif;
+  font-size: 1.3rem;
+  padding: 5px 20px;
+}

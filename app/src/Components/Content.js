@@ -14,7 +14,7 @@ export default class Content extends React.Component{
         <div className="route_wrapper">
           <NotificationContainer />
           <Switch>
-              <Route exact path={`${APP_ROOT}`} component={() => (<Demo   /> )}  />
+              <Route exact path={`${APP_ROOT}`} component={() => (<Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendEther={this.props.sendEther} readBalance={this.props.readBalance} checkLoggedIn={this.props.checkLoggedIn} />)} /> )}  />
               <Route path={`/about`} />
               <Route path={`/contact`} />
               <Route path={`/explorer`} />
@@ -22,7 +22,7 @@ export default class Content extends React.Component{
               <Route path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} dummyTransactions={this.props.dummyTransactions} /> )} />
               <Route path={`${APP_ROOT}login`} component={() => ( <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} /> )} />
               <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
-              <Route path={`${APP_ROOT}demo`} component={() => ( <Demo sendEther={this.props.sendEther} readBalance={this.props.readBalance} />)} />
+              <Route path={`${APP_ROOT}demo`} component={() => ( <Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendEther={this.props.sendEther} readBalance={this.props.readBalance} checkLoggedIn={this.props.checkLoggedIn} />)} />
           </Switch>
         </div>
     );

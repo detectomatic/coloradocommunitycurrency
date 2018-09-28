@@ -95,4 +95,27 @@ const accountDetails = function(){
     });
 };
 
-export { login, register, logout, loggedIn, accountDetails }
+const retrieveSentHashes = function(address){
+    return axios.post(`${endpoint}retrieve-sent-hashes`, { address }, {withCredentials:true})
+    .then((data) => {
+        console.log('SENT TRANSACTIONS:', data);
+        return data;
+    })
+    .catch((error)=>{
+        console.log('AD error', error);
+    });
+};
+
+const retrieveReceivedHashes = function(address){
+    return axios.post(`${endpoint}retrieve-received-hashes`, { address }, {withCredentials:true})
+    .then((data) => {
+        console.log('RECEIVED TRANSACTIONS:', data);
+        return data;
+    })
+    .catch((error)=>{
+        console.log('AD error', error);
+    });
+};
+
+
+export { login, register, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes }

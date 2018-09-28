@@ -12,7 +12,6 @@ export default class Register extends React.Component{
     constructor(){
         super();
         this.state = {
-            username : '',
             email : '',
             password : '',
             passwordConfirm : '',
@@ -122,12 +121,6 @@ export default class Register extends React.Component{
                 </section>
                 <section className="form-section">
                     <form id="registrationForm" onSubmit={this.handleSubmit.bind(this)}>
-                        <div className="input_container">
-                            <label>
-                                <strong>Username:</strong>
-                                <input name="username" type="text" value={this.state.username} onChange={this.handleChange.bind(this)} placeholder="Enter a Username" minLength="5" maxLength="30" required />
-                            </label>
-                        </div>
                         <div className="input_container">
                             <label>
                                 <strong>Email:</strong>

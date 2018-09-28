@@ -8,7 +8,7 @@ import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
-import { login, logout, loggedIn, accountDetails } from '~/common/loginService';
+import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
 
 
@@ -86,6 +86,21 @@ export default class App extends React.Component{
     });
   }
 
+  retrieveSentHashes(){
+    retrieveSentHashes("0x895B758229aFF6C0f95146A676bBF579aD7636aa")
+    .then((data)=>{
+      console.log('SENT: ', data);
+    });
+  }
+
+  retrieveReceivedHashes(){
+    retrieveReceivedHashes("0x895B758229aFF6C0f95146A676bBF579aD7636aa")
+    .then((data)=>{
+      console.log('RECEIVED: ', data);
+    });
+  }
+
+
   readTransactions(){
     this.web3.eth.getTransactionsByAccount();
   }
@@ -139,6 +154,13 @@ export default class App extends React.Component{
         break;
     }
   }
+
+  loggedIn(){
+    loggedIn()
+    .then((data)=>{
+      console.log('Loggged in data', data);
+    });
+  }
   
   componentWillMount(){
     this.initWeb3();
@@ -149,7 +171,7 @@ export default class App extends React.Component{
       <div>
         <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} />
+        <Content checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
         <Footer />
       </div>
     );

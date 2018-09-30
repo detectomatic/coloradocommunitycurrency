@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
+import * as utils from 'web3-utils';
+import { BigNumber } from 'bignumber.js';
 
 export default class TransactionTable extends React.Component{
   constructor(){
@@ -22,7 +24,10 @@ export default class TransactionTable extends React.Component{
   }
 
   renderTransactionRows(){
-    const transactionEls = this.props.dummyTransactions.map((trans, i)=>{
+    const transactionEls = this.state.sent.map((trans, i)=>{
+      console.log(trans.value);
+      const val = utils.toBN(trans.value);
+      console.log('V', val);
       return (
         <tr key={i}>
           <td>
@@ -30,11 +35,11 @@ export default class TransactionTable extends React.Component{
             <span className="time_container">{trans.timestamp}</span>
           </td>
           <td>
-            <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.address)}>{trans.address}</span>
+            <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.address)}>{trans.from}</span>
             <span className="copy_container" onClick={this.copyAddress.bind(this, trans.address)} data-tip="Copy Address to Clipbord"><MdContentCopy /></span>
           </td>
           <td>
-            <strong className="amount_container">$ {trans.amount}</strong>
+            <strong className="amount_container">$ { utils.fromWei(val, 'ether') }</strong>
           </td>
         </tr>
       );
@@ -51,14 +56,14 @@ export default class TransactionTable extends React.Component{
   // }
 
   componentDidMount(){
-    // this.props.retrieveSentHashes()
-    // .then((data) =>{
-    //   this.props.retrieveTransactionData(data.data);
-    //   // .then((data)=>{
-    //   //   console.log('DATA2', data);
-    //   //   this.setState(()=>({sent : data}));
-    //   // })
-    // });
+    this.props.retrieveSentHashes()
+    .then((data) =>{
+      this.props.retrieveTransactionData(data.data)
+      .then((data)=>{
+        console.log('DATA2', data);
+        this.setState(()=>({sent : data}));
+      })
+    });
   }
 
   render(){

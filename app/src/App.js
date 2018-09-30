@@ -1,5 +1,6 @@
 import React from 'react';
 import * as utils from 'web3-utils';
+//import { utils, providers } from 'web3';
 import { NotificationManager } from 'react-notifications';
 import history from '~/common/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -51,22 +52,27 @@ class App extends React.Component{
     // Check if Web 3 has been injected by the browser
     //if(typeof web3 !== 'undefined'){
     // NOT USING METAMASK FOR DCOIN, remove this later
-    if(false){
+    if(true){
       // Use Browser/metamask version
       console.log('USING METAMASK', this.web3Provider);
       this.web3Provider = web3.currentProvider;
     }else{
       console.log('USING REMOTE RPC');
       this.web3Provider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
+      console.log('web3 provider',this.web3Provider);
     }
 
     this.web3 = new Web3(this.web3Provider);
+    console.log('web3', this.web3);
+    console.log('is connected ',this.web3.isConnected());
+
+ 
   }
 
   sendEther(){
     // Get specific Eth Account
     this.web3.eth.getCoinbase((err, account) => {
-      console.log(account);
+      console.log('ACC',account);
       // Send 2 ether to account 2
       this.web3.eth.sendTransaction({
         from: account,
@@ -78,10 +84,11 @@ class App extends React.Component{
     });
   }
   readBalance(){
-    this.web3.eth.getBalance("0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B", (error, wei)=>{
+    this.web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
       if (!error) {
-
+        
         var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
+        console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
         this.setState(()=>({balance}));
     }
 
@@ -102,17 +109,32 @@ class App extends React.Component{
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   retrieveTransactionData(transArray){
-    //console.log('rtd', transArray[0]);
-    this.web3.eth.getTransaction(transArray[0], (err, data) =>{
-      //console.log('in cb', data);
-      return data;
+    
+    const promiseArray = transArray.map((p, i)=>{
+      
+      if(i <= 5){
+        return new Promise((resolve, reject)=>{
+          this.web3.eth.getTransaction(transArray[i], (err, data) =>{
+            if(err){
+              console.log('ERR', err);
+              reject(err);
+            }
+            resolve(data);
+          });
+        });
+      }
+      
     });
 
-  }
 
+    console.log('pa', promiseArray);
+    return Promise.all(promiseArray)
+    .then((values) =>{
+      return values;
+    });
 
-  readTransactions(){
-    this.web3.eth.getTransactionsByAccount();
+    
+
   }
 
   // Handle login to node backend on google cloud
@@ -191,7 +213,7 @@ class App extends React.Component{
       <div>
         <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content retrieveTransactionData={ this.retrieveTransactionData.bind(this) } appState={ this.state } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
+        <Content retrieveTransactionData={ this.retrieveTransactionData.bind(this) } appState={ this.state } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
         <Footer />
       </div>
     );

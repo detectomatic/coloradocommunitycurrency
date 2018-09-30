@@ -18,26 +18,26 @@ export default class Account extends React.Component{
     // When component mounts, retrieve details about the account from the database
     // Does NOT include blockchain data
     componentDidMount(){
-        this.props.getAccountDetails()
-        .then((data) =>{
-             if(data.data){
-                 const { email, publicEthKey, username } = data.data;
-                 this.setState(()=>({ email, publicEthKey, username}));
-             }
-        });
+        // this.props.getAccountDetails()
+        // .then((data) =>{
+        //      if(data.data){
+        //          const { email, publicEthKey, username } = data.data;
+        //          this.setState(()=>({ email, publicEthKey, username}));
+        //      }
+        // });
      }
 
     // Generates list items for each ally passed in from App State via props
-    renderAllyData(){
-        return this.props.allies.map((ally, i)=>{
-            return <li className="ally-data" key={i}>
-                <strong className="ally-label">ID: </strong>
-                <span className="ally-value">{ ally.id }</span>
-                <strong className="ally-label">DNA: </strong>
-                <span className="ally-value">{ ally.dna }</span>
-            </li>
-        });
-    }
+    // renderAllyData(){
+    //     return this.props.allies.map((ally, i)=>{
+    //         return <li className="ally-data" key={i}>
+    //             <strong className="ally-label">ID: </strong>
+    //             <span className="ally-value">{ ally.id }</span>
+    //             <strong className="ally-label">DNA: </strong>
+    //             <span className="ally-value">{ ally.dna }</span>
+    //         </li>
+    //     });
+    // }
 
     render(){
         return(
@@ -45,7 +45,7 @@ export default class Account extends React.Component{
                 <section className="title-section">
                     <div className="subsection">
                         <h1><MdFace /></h1>
-                        <p>{this.state.username}</p>
+                        {/* <p>{this.state.username}</p> */}
                     </div>
                 </section>
                 <section className="details-section">
@@ -62,14 +62,14 @@ export default class Account extends React.Component{
                             <strong>{ this.state.publicEthKey }</strong>
                         </div>
                     </div>
-                    <div className="subsection">
+                    {/* <div className="subsection">
                         <h2>Your Allies</h2>
                     </div>
                     <div className="subsection subsection-allies">
                         <ul>
                             { this.renderAllyData() }
                         </ul>
-                    </div>
+                    </div> */}
                     {/* <div className="subsection">
                         <h2>Account Actions</h2>
                     </div> */}
@@ -84,6 +84,6 @@ export default class Account extends React.Component{
 
 // PROP-TYPES
 Account.propTypes = {
-    allies : PropTypes.array.isRequired,
-    getAccountDetails : PropTypes.func.isRequired
+    //allies : PropTypes.array.isRequired,
+    //getAccountDetails : PropTypes.func.isRequired
 };

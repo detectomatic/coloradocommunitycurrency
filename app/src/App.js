@@ -10,16 +10,18 @@ import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
+import { withCookies } from 'react-cookie';
 
 
 
-export default class App extends React.Component{
+class App extends React.Component{
   constructor(){
     super();
     this.state = {
       loggedIn : false,
       balance : '',
       numTransactions : null,
+      publicEthKey : '',
       dummyTransactions : [{
         timestamp : 1537220287303,
         address : '0x895B758229aFF6C0f95146A676bBF579aD7636aa',
@@ -30,14 +32,16 @@ export default class App extends React.Component{
         address : '0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B',
         amount : 10.26
         
-      }]
+      }],
+      cookie : ''
     }
   }
 
   // Helper method to set state and call a callback function if it exists
   // Used for some child components to update the state without throwing a react memory leak error
-  modifyAppState(state, cb){console.log('SS', state);
-    this.setState(()=>(state), ()=>{
+  modifyAppState(state, cb){
+    this.setState(()=>(Object.assign(this.state, state)), ()=>{
+      console.log('updated app state', this.state);
       if(cb) cb();
     });
   }
@@ -45,17 +49,18 @@ export default class App extends React.Component{
   // Initialize Web 3 to communicate with the blockchain
   initWeb3(){
     // Check if Web 3 has been injected by the browser
-    if(typeof web3 !== 'undefined'){
+    //if(typeof web3 !== 'undefined'){
+    // NOT USING METAMASK FOR DCOIN, remove this later
+    if(false){
       // Use Browser/metamask version
+      console.log('USING METAMASK', this.web3Provider);
       this.web3Provider = web3.currentProvider;
-      console.log('CURRENT WEB 3', this.web3Provider);
-    }else{alert('NO WEB 3');
-      //console.log('Sorry, you need metamask to use this application.');
-      this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+    }else{
+      console.log('USING REMOTE RPC');
+      this.web3Provider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
     }
 
     this.web3 = new Web3(this.web3Provider);
-    console.log(this.web3.eth.accounts);
   }
 
   sendEther(){
@@ -86,18 +91,23 @@ export default class App extends React.Component{
     });
   }
 
-  retrieveSentHashes(){
-    retrieveSentHashes("0x895B758229aFF6C0f95146A676bBF579aD7636aa")
-    .then((data)=>{
-      console.log('SENT: ', data);
-    });
+  retrieveSentHashes(){console.log('!!', this.state.publicEthKey);
+    return retrieveSentHashes(this.state.publicEthKey);
+
   }
 
   retrieveReceivedHashes(){
-    retrieveReceivedHashes("0x895B758229aFF6C0f95146A676bBF579aD7636aa")
-    .then((data)=>{
-      console.log('RECEIVED: ', data);
+    return retrieveReceivedHashes(this.state.publicEthKey);
+  }
+
+  // WEB3 Call to get transaction data of supplied hashes from blockchain
+  retrieveTransactionData(transArray){
+    //console.log('rtd', transArray[0]);
+    this.web3.eth.getTransaction(transArray[0], (err, data) =>{
+      //console.log('in cb', data);
+      return data;
     });
+
   }
 
 
@@ -110,12 +120,15 @@ export default class App extends React.Component{
     //console.log(email, password);
     if(doLogin){
       return login({ email, password })
-      .then((data)=>{
+      .then((data)=>{console.log('AUTH data', data);
         if(data.error){
           console.log('ERROR - ', data.error);
           return;
         }
-        //console.log('THE DATA', data);
+        if(!data.isAuthenticated){
+          console.log('ERROR -  Unable to Authenticate');
+          return;
+        }
         return data;
       })
       .catch((error)=>{
@@ -130,7 +143,8 @@ export default class App extends React.Component{
           console.log('ERROR - ', data.error);
           return;
         }
-        this.setState(()=>({loggedIn:false, account: ''}), ()=>{ setTimeout(()=>(history.push(`${APP_ROOT}login`)),1000);});
+        this.props.cookies.remove('sid');
+        this.setState(()=>({loggedIn:false, account: '', cookie : ''}), ()=>{ setTimeout(()=>(history.push(`${APP_ROOT}login`)),1000);});
       })
       .catch((error)=>{
         console.log('log out failure', error);
@@ -156,24 +170,32 @@ export default class App extends React.Component{
   }
 
   loggedIn(){
-    loggedIn()
-    .then((data)=>{
-      console.log('Loggged in data', data);
-    });
+    return loggedIn();
   }
   
   componentWillMount(){
-    this.initWeb3();
+    
+    const cookie = this.props.cookies.get('sid');
+    if(cookie !== undefined) {
+      this.loggedIn()
+      .then((data) =>{
+        this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey });
+        this.initWeb3();
+      })
+      
+    } 
   }
 
-  render(){
+  render(){console.log('MAIN APP RENDER', this.state);
     return(
       <div>
         <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} dummyTransactions={this.state.dummyTransactions} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
+        <Content retrieveTransactionData={ this.retrieveTransactionData.bind(this) } appState={ this.state } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} readTransactions={this.readTransactions.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
         <Footer />
       </div>
     );
   }
 }
+
+export default withCookies(App);

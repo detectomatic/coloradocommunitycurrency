@@ -5,6 +5,7 @@ const login = function(formData){
     return axios.post(`${endpoint}login`,{email: formData.email, password: formData.password}, {withCredentials:true})
     .then((data) => {console.log('data', data);
         if(data.status === 200){
+            console.log('LI',data);
             const errorObj = data.data.error;
             if(errorObj){
                 return {
@@ -76,7 +77,7 @@ const logout = function(){
 const loggedIn = function(){
     return axios.get(`${endpoint}logged-in`, {withCredentials:true})
     .then((data) => {
-        console.log('LI data', data);
+        //console.log('LI data', data);
         return data;
     })
     .catch((error)=>{

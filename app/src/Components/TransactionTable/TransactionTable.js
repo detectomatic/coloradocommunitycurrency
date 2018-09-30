@@ -3,7 +3,13 @@ import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 
 export default class TransactionTable extends React.Component{
-
+  constructor(){
+    super();
+    this.state = {
+      sent : [],
+      received : []
+    }
+  }
   copyAddress(address){
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
@@ -16,7 +22,6 @@ export default class TransactionTable extends React.Component{
   }
 
   renderTransactionRows(){
-    console.log(this.props.dummyTransactions);
     const transactionEls = this.props.dummyTransactions.map((trans, i)=>{
       return (
         <tr key={i}>
@@ -39,6 +44,23 @@ export default class TransactionTable extends React.Component{
     );
   }
 
+  // componentWillReceiveProps(nextProps){
+  //   if(nextProps.){
+
+  //   }
+  // }
+
+  componentDidMount(){
+    // this.props.retrieveSentHashes()
+    // .then((data) =>{
+    //   this.props.retrieveTransactionData(data.data);
+    //   // .then((data)=>{
+    //   //   console.log('DATA2', data);
+    //   //   this.setState(()=>({sent : data}));
+    //   // })
+    // });
+  }
+
   render(){
     return(
       <div className="page-wrapper transaction-page">
@@ -46,6 +68,8 @@ export default class TransactionTable extends React.Component{
             <div className="subsection">
                 <h1>Latest Transactions</h1>
             </div>
+            <button className="btn btn-secondary" onClick={this.props.retrieveSentHashes}>Sent Hashes</button>
+          <button className="btn btn-secondary" onClick={this.props.retrieveReceivedHashes}>Received Hashes</button>
         </section>
         <section className="table-section">
           <table className="table table-striped">

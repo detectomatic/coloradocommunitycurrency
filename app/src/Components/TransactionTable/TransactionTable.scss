@@ -1,0 +1,117 @@
+@import "~/assets/scss/colors.scss";
+
+.transaction-page{
+  section{
+    &.controls-section{
+      display:flex;
+      justify-content: center;
+      padding: 0px 20px;
+      div.btn-group{
+        width:80%;
+        max-width:1024px;
+        display:flex;
+        justify-content: flex-end;
+        button{
+          min-width:90px;
+        }
+      }
+ 
+    }
+
+    &.table-section{
+      display:flex;
+      justify-content: center;
+      padding: 20px;
+      .table{
+        width:80%;
+        max-width:1024px;
+        border: 1px solid $primary_border;
+        background-color: $secondary_background;
+        margin-bottom:0px;
+        thead{
+          tr{
+            th{
+              background-color: $table_header;
+              color: $reversed_text;
+              border-bottom: 1px solid $primary_border;
+              border-top: 1px solid $primary_border;
+              &+th{
+                border-left: 1px solid $primary_border;
+              }
+              &:last-child{
+                text-align:right;
+              }
+            }
+          }
+        }
+        tbody{
+          tr{
+            &:nth-child(odd){
+              background-color: $table_row;
+            }
+            td{
+              color: $light_text;
+              background-color: transparent;
+              &.date_cell{
+                .time_container{
+                  margin-top:7px;
+                }
+              }
+              &.label_cell{
+                border-right:solid 1px transparent;
+                min-width:100px;
+                .transaction_label_container{
+                  margin-top:4px;
+                }
+              }
+              &.copy_cell{
+                border-left: solid 1px transparent;
+                text-align:center;
+              }
+              &+ td { 
+                border-left: 1px solid $primary_border; 
+              }
+              .secondary_row{
+                font-size:.8em;
+                color: $light_text;
+              }
+              span{
+                display: inline-block;
+                &.time_container{
+                  margin-left:10px;
+                }
+                &.copy_container{
+                  width: 24px;
+                  height: 24px;
+                  border-radius: 2px;
+                  text-align: center;
+                  border: solid 1px transparent;
+                  transition: background-color .25s ease-in-out;
+                  transition: color .25s ease-in-out;
+                  cursor: pointer;
+                  &:hover{
+                    background-color: $very_light_text;
+                    color: $reversed_text;
+                    border-color: $reversed_text;
+                  }
+                }
+                &.address_container, &.transaction_container{
+                  transition: color .25s ease-in-out;
+                  cursor: pointer;
+                  &:hover{
+                    color: $very_light_text;
+                  }
+                }
+              }
+              strong{
+                display: inline-block;
+                &:last-child{
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

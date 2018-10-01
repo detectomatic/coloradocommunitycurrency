@@ -31,7 +31,7 @@ export default class Nav extends React.Component{
             <span className="account">
        
                 <NavLink to={`${APP_ROOT}account`} className={ this.state.open ? 'subnav_open nav-link' : 'nav-link' } onMouseEnter={this.handleToggle.bind(this)} title="Account" activeClassName="active">
-                <FaUserCircle/>
+                    <FaUserCircle/>
                 </NavLink>
                 <div onClick={this.handleToggle.bind(this)} className={`account_dropdown ${this.state.open ? ' dropdown_open' : ' dropdown_closed' }`}>
                     <ul>

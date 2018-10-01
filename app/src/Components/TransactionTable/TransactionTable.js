@@ -14,7 +14,7 @@ export default class TransactionTable extends React.Component{
       activeButton : 'sent',
     }
   }
-  copyAddress(address){console.log('add', address);
+  copyAddress(address){
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
     dummy.setAttribute('value', address);

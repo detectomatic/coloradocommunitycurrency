@@ -23,17 +23,6 @@ class App extends React.Component{
       balance : '',
       numTransactions : null,
       publicEthKey : '',
-      dummyTransactions : [{
-        timestamp : 1537220287303,
-        address : '0x895B758229aFF6C0f95146A676bBF579aD7636aa',
-        amount : 50.26
-      },
-      {
-        timestamp : 1537220375766,
-        address : '0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B',
-        amount : 10.26
-        
-      }],
       cookie : ''
     }
   }

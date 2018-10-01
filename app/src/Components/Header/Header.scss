@@ -19,11 +19,12 @@ header{
           color: $very_light_text;
           line-height: 50px;
           transition: color .25s ease-in-out;
+          cursor: pointer;
           &:hover{
-            color: $active_text !important;
+            color: $hover_text !important;
           }
           &.active{
-            color: $reversed_text;
+            color: $active_text;
           }
           &.btn{
             color: $reversed_text;
@@ -49,9 +50,13 @@ header{
             height:30px;
             font-size:1.6em;
             vertical-align: middle;
-            color: $reversed_text;
+            color: $very_light_text;
+            transition: color .25s ease-in-out;
             &:hover{
-              color: $active_text !important;
+              color: $hover_text !important;
+            }
+            &.subnav_open{
+              color: $hover_text !important;
             }
             svg{
                 position:absolute;
@@ -59,6 +64,11 @@ header{
                 left:50%;
                 margin-left:-7px;
                 margin-top:-7px;
+            }
+            &.active{
+              svg{
+                color: $active_text;
+              }
             }
           }
           div.account_dropdown{
@@ -110,7 +120,7 @@ header{
       }
     }
     .opaque-backdrop{
-      background:rgba(255,255,255,.6);
+      //background:rgba(255,255,255,.6);
       position:fixed;
       top:0px;
       left:0px;

@@ -29,9 +29,10 @@ export default class Nav extends React.Component{
     if(this.props.loggedIn){
         return (
             <span className="account">
-                <a onClick={this.handleToggle.bind(this)} title="Account">
+       
+                <NavLink to={`${APP_ROOT}account`} className={ this.state.open ? 'subnav_open nav-link' : 'nav-link' } onMouseEnter={this.handleToggle.bind(this)} title="Account" activeClassName="active">
                 <FaUserCircle/>
-                </a>
+                </NavLink>
                 <div onClick={this.handleToggle.bind(this)} className={`account_dropdown ${this.state.open ? ' dropdown_open' : ' dropdown_closed' }`}>
                     <ul>
                         <li>
@@ -52,8 +53,8 @@ export default class Nav extends React.Component{
 
   render(){
     return(
-        <nav className="nav-wrapper">
-            <div onClick={this.handleToggle.bind(this)} className={`opaque-backdrop ${this.state.open ? 'backdrop-visible' : 'backdrop-hidden'}`}></div>
+        <nav className="nav-wrapper" onMouseLeave={()=>{this.setState({open : false})}}>
+            {/* <div onClick={this.handleToggle.bind(this)} className={`opaque-backdrop ${this.state.open ? 'backdrop-visible' : 'backdrop-hidden'}`}></div> */}
             <ul className="nav">
                 <li className="nav-item">
                 <a className="nav-link" href="/about">About</a>

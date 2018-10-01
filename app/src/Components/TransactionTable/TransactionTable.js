@@ -2,7 +2,6 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 import * as utils from 'web3-utils';
-import { BigNumber } from 'bignumber.js';
 
 export default class TransactionTable extends React.Component{
   constructor(){
@@ -25,7 +24,6 @@ export default class TransactionTable extends React.Component{
 
   renderTransactionRows(){
     const transactionEls = this.state.sent.map((trans, i)=>{
-      console.log(trans.value);
       const val = utils.toBN(trans.value);
       console.log('V', val);
       return (

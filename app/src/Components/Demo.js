@@ -5,7 +5,7 @@ export default class Demo extends React.Component{
     return(
       <div>
         <h1>DCOIN Dashboard</h1>
-        <button className="btn btn-primary" onClick={this.props.sendEther}>Send 2 Ether</button>
+        <button className="btn btn-primary" onClick={this.props.sendMoney}>Send 2 Ether</button>
         <button className="btn btn-secondary" onClick={this.props.readBalance}>Read Balance</button>
         <button className="btn btn-secondary" onClick={this.props.checkLoggedIn}>Logged In</button>
         <button className="btn btn-secondary" onClick={this.props.retrieveSentHashes}>Sent Hashes</button>

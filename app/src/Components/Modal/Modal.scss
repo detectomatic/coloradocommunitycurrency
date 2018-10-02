@@ -1,0 +1,36 @@
+@import '~/assets/scss/colors.scss';
+.modal{
+  z-index:100;
+}
+.modal-backdrop{
+  z-index:99;
+}
+.input_container{
+  margin: 0px auto;
+  width: 385px;
+}
+.address_input_container{
+  margin-top: 20px;
+  input{
+    width: 350px;
+  }
+  .icon-span{
+    svg{
+      font-size:20px;
+      margin: 0px 5px 0px;
+      border-radius: 50%;
+    }
+    .incomplete{
+      color: $error_splash;
+      svg{
+        border:solid 2px $error_splash;
+      }
+    }
+    .complete{
+      color: $success_splash;
+      svg{
+        border:solid 2px $success_splash;
+      }
+    }
+  }
+}

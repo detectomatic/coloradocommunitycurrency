@@ -10,8 +10,9 @@ export default class TransactionTable extends React.Component{
     this.state = {
       sent : [],
       received : [],
-      transactionHashes : [],
-      activeButton : 'sent',
+      sentHashes : [],
+      receivedHashes : [],
+      activeButton : '',
     }
   }
   copyAddress(address){
@@ -26,89 +27,153 @@ export default class TransactionTable extends React.Component{
   }
 
   renderTransactionRows(){
-    const transactionEls = this.state.sent.map((trans, i)=>{
-      const val = utils.toBN(trans.value);
-      return (
-        <tr key={i}>
-          <td className="date_cell">
-            <div className="date_container">
-              <strong>9/15/18</strong>
-            </div>
-            <div className="time_container secondary_row">
-              <span>10:00 PM</span>
-            </div>
-          </td>
-          <td className="label_cell">
-            <div className="sent_to_label_container">
-              <strong>SENT TO</strong>
-            </div> 
-            <div className="transaction_label_container secondary_row">
-              <span>Trans#</span>
-            </div> 
-          </td>
-          <td className="address_cell">
-            <div>
-              <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.from)}>
-                <strong>{trans.from}</strong>
-              </span>
-            </div>
-            <div>
-            <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.transactionHashes[i])}>
-              {this.state.transactionHashes[i]}
-            </span>
-            </div>
-          </td>
-          <td  className="copy_cell">
-            <div  data-tip="Copy Address to Clipbord">
-              <span className="copy_container" onClick={this.copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
-            </div>
-            <div data-tip="Copy Transaction to Clipbord">
-              <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.transactionHashes[i])}><MdContentCopy /></span>
-            </div>
-          </td>
-          <td  className="amount_cell">
-            <div>
-              <strong className="amount_container">
-                
-                $ { utils.fromWei(val, 'ether') }
-              </strong>
-            </div>
-          </td>
-        </tr>
-      );
-    });
-    return (
-      transactionEls
-    );
+
+      let transactionEls;
+      // SENT
+      if(this.state.activeButton === 'sent'){
+        transactionEls = this.state.sent.map((trans, i)=>{
+          const val = utils.toBN(trans.value);
+          return (
+            <tr key={`sent-${i}`}>
+              <td className="date_cell">
+                <div className="date_container">
+                  <strong>9/15/18</strong>
+                </div>
+                <div className="time_container secondary_row">
+                  <span>10:00 PM</span>
+                </div>
+              </td>
+              <td className="label_cell">
+                <div className="sent_to_label_container">
+                  <strong>SENT TO:</strong>
+                </div> 
+                <div className="transaction_label_container secondary_row">
+                  <span>Transaction: </span>
+                </div> 
+              </td>
+              <td className="address_cell">
+                <div>
+                  <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.to)}>
+                    <strong>{trans.to}</strong>
+                  </span>
+                </div>
+                <div>
+                {
+                  <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.sentHashes[i])}>
+                    {this.state.sentHashes[i]}
+                  </span>
+                }
+                </div>
+              </td>
+              <td  className="copy_cell">
+                <div  data-tip="Copy Address to Clipbord">
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
+                </div>
+                <div data-tip="Copy Transaction to Clipbord">
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.sentHashes[i])}><MdContentCopy /></span>
+                </div>
+              </td>
+              <td  className="amount_cell">
+                <div>
+                  <strong className="amount_container">
+                    
+                    $ { utils.fromWei(val, 'ether') }
+                  </strong>
+                </div>
+              </td>
+            </tr>
+          )
+        });
+      // RECEIVED
+      }else{
+        transactionEls = this.state.received.map((trans, i)=>{
+          const val = utils.toBN(trans.value);
+          return (
+            <tr key={`received-${i}`}>
+              <td className="date_cell">
+                <div className="date_container">
+                  <strong>9/15/18</strong>
+                </div>
+                <div className="time_container secondary_row">
+                  <span>10:00 PM</span>
+                </div>
+              </td>
+              <td className="label_cell">
+                <div className="sent_to_label_container">
+                  <strong>SENDER:</strong>
+                </div> 
+                <div className="transaction_label_container secondary_row">
+                  <span>Transaction: </span>
+                </div> 
+              </td>
+              <td className="address_cell">
+                <div>
+                  <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.from)}>
+                    <strong>{trans.from}</strong>
+                  </span>
+                </div>
+                <div>
+                  {
+                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.receivedHashes[i])}>
+                      {this.state.receivedHashes[i]}
+                    </span>
+                  }
+                </div>
+              </td>
+              <td  className="copy_cell">
+                <div  data-tip="Copy Address to Clipbord">
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
+                </div>
+                <div data-tip="Copy Transaction to Clipbord">
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.receivedHashes[i])}><MdContentCopy /></span>
+                </div>
+              </td>
+              <td  className="amount_cell">
+                <div>
+                  <strong className="amount_container">
+                    
+                    $ { utils.fromWei(val, 'ether') }
+                  </strong>
+                </div>
+              </td>
+            </tr>
+          )
+        });
+      }
+      return transactionEls;
   }
 
-  toggleSentReceived(button){
+  retrieveTableData(button){
     const activeButton = this.state.activeButton;
     if(button === 'sent' && activeButton !== 'sent'){
       this.setState({activeButton : 'sent'});
-      this.props.retrieveSentHashes();
+      this.props.retrieveSentHashes()
+      .then((hashes) =>{
+        this.props.retrieveTransactionData(hashes.data)
+        .then((data)=>{
+          this.setState(()=>({sent : data, sentHashes : hashes.data}));
+        })
+      });
     }else if(button === 'received' && activeButton !== 'received'){
       this.setState({activeButton : 'received'});
-      this.props.retrieveReceivedHashes();
+      this.props.retrieveReceivedHashes()
+      .then((hashes) =>{
+        this.props.retrieveTransactionData(hashes.data)
+        .then((data)=>{
+          this.setState(()=>({received : data, receivedHashes : hashes.data}));
+        })
+      });
     }
     return;
   }
 
-  componentDidUpdate(){
-    ReactTooltip.rebuild();
+
+  componentWillMount() {
+    this.retrieveTableData('sent');
   }
 
-  componentDidMount(){
-    this.props.retrieveSentHashes()
-    .then((data) =>{
-      console.log('DD', data);
-      this.setState({transactionHashes : data.data});
-      this.props.retrieveTransactionData(data.data)
-      .then((data)=>{
-        console.log('DATA2', data);
-        this.setState(()=>({sent : data}));
-      })
-    });
+  componentDidUpdate(){
+    ReactTooltip.rebuild();
   }
 
   render(){
@@ -121,8 +186,8 @@ export default class TransactionTable extends React.Component{
         </section>
         <section className="controls-section">
           <div className="btn-group">
-            <button className={this.state.activeButton === 'sent' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.toggleSentReceived('sent')}}>Sent</button>
-            <button className={this.state.activeButton === 'received' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.toggleSentReceived('received')}}>Received</button>
+            <button className={this.state.activeButton === 'sent' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('sent')}}>Sent</button>
+            <button className={this.state.activeButton === 'received' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('received')}}>Received</button>
           </div>
         </section>
         <section className="table-section">
@@ -130,7 +195,7 @@ export default class TransactionTable extends React.Component{
             <thead>
               <tr>
                 <th><span className="date_label_container">Date</span></th>
-                <th colspan="3"><span className="address_label_container">Transaction</span></th>
+                <th colSpan="3"><span className="address_label_container">Transaction</span></th>
                 <th><span className="amount_label_container">Amount</span></th>
               </tr>
             </thead>

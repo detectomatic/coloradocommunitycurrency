@@ -108,6 +108,7 @@ const retrieveSentHashes = function(address){
 };
 
 const retrieveReceivedHashes = function(address){
+    console.log('address', address);
     return axios.post(`${endpoint}retrieve-received-hashes`, { address }, {withCredentials:true})
     .then((data) => {
         console.log('RECEIVED TRANSACTIONS:', data);

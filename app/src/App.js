@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import * as utils from 'web3-utils';
 //import { utils, providers } from 'web3';
 import { NotificationManager } from 'react-notifications';
@@ -9,6 +10,8 @@ import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
+import Modal from '~/Components/Modal/Modal';
+//import Modal from 'react-bootstrap/lib/Modal';
 import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
 import { withCookies } from 'react-cookie';
@@ -23,7 +26,8 @@ class App extends React.Component{
       balance : '',
       numTransactions : null,
       publicEthKey : '',
-      cookie : ''
+      cookie : '',
+      modalOpen : false
     }
   }
 
@@ -39,12 +43,12 @@ class App extends React.Component{
   // Initialize Web 3 to communicate with the blockchain
   initWeb3(){
     // Check if Web 3 has been injected by the browser
-    //if(typeof web3 !== 'undefined'){
+    if(typeof web3 !== 'undefined'){
     // NOT USING METAMASK FOR DCOIN, remove this later
-    if(true){
+    //if(true){
       // Use Browser/metamask version
-      console.log('USING METAMASK', this.web3Provider);
       this.web3Provider = web3.currentProvider;
+      console.log('USING METAMASK', this.web3Provider);
     }else{
       console.log('USING REMOTE RPC');
       this.web3Provider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
@@ -58,15 +62,16 @@ class App extends React.Component{
  
   }
 
-  sendEther(){
+  sendMoney(address, amount){
+    console.log(this.web3);
     // Get specific Eth Account
     this.web3.eth.getCoinbase((err, account) => {
       console.log('ACC',account);
       // Send 2 ether to account 2
       this.web3.eth.sendTransaction({
         from: account,
-        to: '0xe6680987f8893F130aa2313acacb2A5eDaa9CC2B',
-        value: '2000000000000000000'
+        to: address,
+        value: amount
       }, (error, hash)=>{
         console.log('sent', hash);
       });
@@ -87,7 +92,7 @@ class App extends React.Component{
     });
   }
 
-  retrieveSentHashes(){console.log('!!', this.state.publicEthKey);
+  retrieveSentHashes(){
     return retrieveSentHashes(this.state.publicEthKey);
 
   }
@@ -98,7 +103,7 @@ class App extends React.Component{
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   retrieveTransactionData(transArray){
-    
+    //console.log('TA',transArray);
     const promiseArray = transArray.map((p, i)=>{
       
       if(i <= 5){
@@ -183,7 +188,11 @@ class App extends React.Component{
   loggedIn(){
     return loggedIn();
   }
-  
+
+  toggleModal(){
+    this.setState({ modalOpen : !this.state.modalOpen });
+  }
+
   componentWillMount(){
     
     const cookie = this.props.cookies.get('sid');
@@ -197,16 +206,20 @@ class App extends React.Component{
     } 
   }
 
-  render(){console.log('MAIN APP RENDER', this.state);
+
+
+  render(){
     return(
       <div>
-        <Header loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
+        <Header toggleModal={ this.toggleModal.bind(this) } loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content retrieveTransactionData={ this.retrieveTransactionData.bind(this) } appState={ this.state } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendEther={this.sendEther.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
+        <Content modalOpen={ this.state.modalOpen } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendMoney={this.sendMoney.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
+        <Modal sendMoney={ this.sendMoney.bind(this) } toggleModal={ this.toggleModal.bind(this) } modalOpen={ this.state.modalOpen } />
+        
         <Footer />
       </div>
     );
   }
 }
 
-export default withCookies(App);
+export default withCookies(withRouter(App));

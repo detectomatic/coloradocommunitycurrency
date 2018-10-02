@@ -57,19 +57,22 @@ export default class Nav extends React.Component{
             {/* <div onClick={this.handleToggle.bind(this)} className={`opaque-backdrop ${this.state.open ? 'backdrop-visible' : 'backdrop-hidden'}`}></div> */}
             <ul className="nav">
                 <li className="nav-item">
-                <a className="nav-link" href="/about">About</a>
+                    <a className="nav-link" href="/about">About</a>
                 </li>
                 <li className="nav-item">
-                <a className="nav-link" href="/contact">Contact</a>
+                    <a className="nav-link" href="/contact">Contact</a>
                 </li>
                 <li className="nav-item">
-                <a className="nav-link" href="/explorer">Explorer</a>
+                    <a className="nav-link" href="/explorer">Explorer</a>
                 </li>
                 <li className="nav-item">
-                <NavLink to={`${APP_ROOT}transactions`} className="nav-link" activeClassName="active">Transactions</NavLink>
+                    <NavLink to={`${APP_ROOT}transactions`} className="nav-link" activeClassName="active">Transactions</NavLink>
                 </li>
                 <li className="nav-item">
-                { this.renderGettingStarted() }
+                    <a className="nav-link" onClick={ this.props.toggleModal }>Send DCoin</a>
+                </li>
+                <li className="nav-item">
+                    { this.renderGettingStarted() }
                 </li>
             </ul>
         </nav>

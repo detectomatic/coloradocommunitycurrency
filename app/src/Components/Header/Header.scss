@@ -15,7 +15,7 @@ header{
       flex: 1.5;
       justify-content: flex-end;
       li.nav-item{
-        > a{
+        > a, > span{
           color: $very_light_text;
           line-height: 50px;
           transition: color .25s ease-in-out;

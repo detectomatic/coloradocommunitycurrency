@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+//import * as Web3 from 'web3';
 import * as utils from 'web3-utils';
 //import { utils, providers } from 'web3';
 import { NotificationManager } from 'react-notifications';
@@ -12,7 +13,7 @@ import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import Modal from '~/Components/Modal/Modal';
 //import Modal from 'react-bootstrap/lib/Modal';
-import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes } from '~/common/loginService';
+import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
 import { withCookies } from 'react-cookie';
 
@@ -62,19 +63,46 @@ class App extends React.Component{
  
   }
 
-  sendMoney(address, amount){
-    console.log(this.web3);
+  sendMoney(to, value){
+    //console.log(this.web3);
     // Get specific Eth Account
-    this.web3.eth.getCoinbase((err, account) => {
-      console.log('ACC',account);
-      // Send 2 ether to account 2
+    this.web3.eth.getCoinbase((err, from) => {
+      console.log('ACC',from);
+      // Send money to address
       this.web3.eth.sendTransaction({
-        from: account,
-        to: address,
-        value: amount
+        from,
+        to,
+        value : web3.toWei(value, "ether"), 
       }, (error, hash)=>{
-        console.log('sent', hash);
+        console.log('sent', from);
+        saveNewHash(from, to, hash)
+        .then((response) =>{
+          console.log('success!', response);
+        });
       });
+
+
+      // this.web3.eth.sendTransaction({
+      //     from: account,
+      //     to: address,
+      //     value: amount
+      // })
+      // .on('transactionHash', function(hash){
+      //   console.log('hash');
+      // })
+      // .on('receipt', function(receipt){
+      //   console.log('receipt');
+      // })
+      // .on('confirmation', function(confirmationNumber, receipt){
+      //   console.log('confirmationNumber, receipt');
+      // })
+      // .on('error', console.error)
+      // .then(function(receipt){
+      //     console.log('receipt', receipt);
+      // });
+
+
+
     });
   }
   readBalance(){
@@ -93,6 +121,7 @@ class App extends React.Component{
   }
 
   retrieveSentHashes(){
+    console.log('pub eth key',this.state.publicEthKey);
     return retrieveSentHashes(this.state.publicEthKey);
 
   }
@@ -103,12 +132,12 @@ class App extends React.Component{
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   retrieveTransactionData(transArray){
-    //console.log('TA',transArray);
+    console.log('TA',transArray);
     const promiseArray = transArray.map((p, i)=>{
       
       if(i <= 5){
         return new Promise((resolve, reject)=>{
-          this.web3.eth.getTransaction(transArray[i], (err, data) =>{
+          this.web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){
               console.log('ERR', err);
               reject(err);
@@ -124,6 +153,7 @@ class App extends React.Component{
     console.log('pa', promiseArray);
     return Promise.all(promiseArray)
     .then((values) =>{
+      //console.log('BC data', values);
       return values;
     });
 

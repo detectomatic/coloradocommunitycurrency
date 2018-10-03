@@ -96,7 +96,7 @@ const accountDetails = function(){
     });
 };
 
-const retrieveSentHashes = function(address){
+const retrieveSentHashes = function(address){console.log('sent ad',address);
     return axios.post(`${endpoint}retrieve-sent-hashes`, { address }, {withCredentials:true})
     .then((data) => {
         console.log('SENT TRANSACTIONS:', data);
@@ -119,5 +119,16 @@ const retrieveReceivedHashes = function(address){
     });
 };
 
+const saveNewHash = function(from, to, hash){
+    return axios.post(`${endpoint}save-new-hash`, { from, to, hash }, { withCredentials:true })
+    .then((data) => {
+        console.log('Saved this data:', data);
+        return data;
+    })
+    .catch((error)=>{
+        console.log('AD error', error);
+    });
+}
 
-export { login, register, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes }
+
+export { login, register, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes, saveNewHash }

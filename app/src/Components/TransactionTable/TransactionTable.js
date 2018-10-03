@@ -2,6 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 import * as utils from 'web3-utils';
+import { formatDate, formatTime } from '~/common/formatting.js';
 import './TransactionTable.scss';
 export default class TransactionTable extends React.Component{
 
@@ -27,7 +28,7 @@ export default class TransactionTable extends React.Component{
   }
 
   renderTransactionRows(){
-
+      
       let transactionEls;
       // SENT
       if(this.state.activeButton === 'sent'){
@@ -37,10 +38,10 @@ export default class TransactionTable extends React.Component{
             <tr key={`sent-${i}`}>
               <td className="date_cell">
                 <div className="date_container">
-                  <strong>9/15/18</strong>
+                  <strong>{formatDate( this.state.sentHashes[i].timestamp )}</strong>
                 </div>
                 <div className="time_container secondary_row">
-                  <span>10:00 PM</span>
+                  <span>{formatTime( this.state.sentHashes[i].timestamp )}</span>
                 </div>
               </td>
               <td className="label_cell">
@@ -60,7 +61,7 @@ export default class TransactionTable extends React.Component{
                 <div>
                 {
                   <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.sentHashes[i])}>
-                    {this.state.sentHashes[i]}
+                    {this.state.sentHashes[i].hash}
                   </span>
                 }
                 </div>
@@ -70,7 +71,7 @@ export default class TransactionTable extends React.Component{
                   <span className="copy_container" onClick={this.copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
                 </div>
                 <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.sentHashes[i])}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.sentHashes[i].hash)}><MdContentCopy /></span>
                 </div>
               </td>
               <td  className="amount_cell">
@@ -92,10 +93,10 @@ export default class TransactionTable extends React.Component{
             <tr key={`received-${i}`}>
               <td className="date_cell">
                 <div className="date_container">
-                  <strong>9/15/18</strong>
+                  <strong>...</strong>
                 </div>
                 <div className="time_container secondary_row">
-                  <span>10:00 PM</span>
+                  <span>{formatTime( this.state.sentHashes[i].timestamp )}</span>
                 </div>
               </td>
               <td className="label_cell">
@@ -114,8 +115,8 @@ export default class TransactionTable extends React.Component{
                 </div>
                 <div>
                   {
-                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.receivedHashes[i])}>
-                      {this.state.receivedHashes[i]}
+                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.receivedHashes[i].hash)}>
+                      {this.state.receivedHashes[i].hash}
                     </span>
                   }
                 </div>
@@ -125,7 +126,7 @@ export default class TransactionTable extends React.Component{
                   <span className="copy_container" onClick={this.copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
                 </div>
                 <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.receivedHashes[i])}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.receivedHashes[i].hash)}><MdContentCopy /></span>
                 </div>
               </td>
               <td  className="amount_cell">
@@ -148,19 +149,21 @@ export default class TransactionTable extends React.Component{
     if(button === 'sent' && activeButton !== 'sent'){
       this.setState({activeButton : 'sent'});
       this.props.retrieveSentHashes()
-      .then((hashes) =>{
-        this.props.retrieveTransactionData(hashes.data)
-        .then((data)=>{
-          this.setState(()=>({sent : data, sentHashes : hashes.data}));
+      .then((data) =>{
+        console.log('@@', data);
+        this.props.retrieveTransactionData(data.data)
+        .then((transaction)=>{
+          console.log('ASDDSA', data.data);
+          this.setState(()=>({sent : transaction, sentHashes : data.data}));
         })
       });
     }else if(button === 'received' && activeButton !== 'received'){
       this.setState({activeButton : 'received'});
       this.props.retrieveReceivedHashes()
-      .then((hashes) =>{
-        this.props.retrieveTransactionData(hashes.data)
-        .then((data)=>{
-          this.setState(()=>({received : data, receivedHashes : hashes.data}));
+      .then((data) =>{
+        this.props.retrieveTransactionData(data.data)
+        .then((transaction)=>{
+          this.setState(()=>({received : transaction, receivedHashes : data.data}));
         })
       });
     }

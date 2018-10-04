@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
-import * as utils from 'web3-utils';
+import { utils, providers } from 'web3';
 import { formatDate, formatTime } from '~/common/formatting.js';
 import './TransactionTable.scss';
 export default class TransactionTable extends React.Component{
@@ -150,10 +150,8 @@ export default class TransactionTable extends React.Component{
       this.setState({activeButton : 'sent'});
       this.props.retrieveSentHashes()
       .then((data) =>{
-        console.log('@@', data);
         this.props.retrieveTransactionData(data.data)
         .then((transaction)=>{
-          console.log('ASDDSA', data.data);
           this.setState(()=>({sent : transaction, sentHashes : data.data}));
         })
       });

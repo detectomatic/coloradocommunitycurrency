@@ -1,8 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-//import * as Web3 from 'web3';
-import * as utils from 'web3-utils';
-//import { utils, providers } from 'web3';
+import { utils, providers } from 'web3';
 import { NotificationManager } from 'react-notifications';
 import history from '~/common/history';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +10,6 @@ import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import Modal from '~/Components/Modal/Modal';
-//import Modal from 'react-bootstrap/lib/Modal';
 import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/loginService';
 import 'react-notifications/lib/notifications.css';
 import { withCookies } from 'react-cookie';
@@ -44,32 +41,29 @@ class App extends React.Component{
   // Initialize Web 3 to communicate with the blockchain
   initWeb3(){
     // Check if Web 3 has been injected by the browser
+    // Use Browser/metamask version
     if(typeof web3 !== 'undefined'){
-    // NOT USING METAMASK FOR DCOIN, remove this later
-    //if(true){
-      // Use Browser/metamask version
       this.web3Provider = web3.currentProvider;
       console.log('USING METAMASK', this.web3Provider);
+    // Use web3 from node_modules
+    // set provider to remote RPC
     }else{
-      console.log('USING REMOTE RPC');
       this.web3Provider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
-      console.log('web3 provider',this.web3Provider);
+      console.log('USING REMOTE RPC');
     }
 
-    this.web3 = new Web3(this.web3Provider);
-    console.log('web3', this.web3);
-    console.log('is connected ',this.web3.isConnected());
-
- 
+    //this.web3 = new Web3(this.web3Provider);
+    //console.log('web3 provider',this.web3Provider);
+    console.log('web3 is connected ',web3.isConnected());
   }
 
   sendMoney(to, value){
-    //console.log(this.web3);
+
     // Get specific Eth Account
-    this.web3.eth.getCoinbase((err, from) => {
+    web3.eth.getCoinbase((err, from) => {
       console.log('ACC',from);
       // Send money to address
-      this.web3.eth.sendTransaction({
+      web3.eth.sendTransaction({
         from,
         to,
         value : web3.toWei(value, "ether"), 
@@ -82,10 +76,10 @@ class App extends React.Component{
       });
 
 
-      // this.web3.eth.sendTransaction({
-      //     from: account,
-      //     to: address,
-      //     value: amount
+      // web3.eth.sendTransaction({
+      //     from,
+      //     to,
+      //     value: web3.toWei(value, "ether")
       // })
       // .on('transactionHash', function(hash){
       //   console.log('hash');
@@ -106,7 +100,7 @@ class App extends React.Component{
     });
   }
   readBalance(){
-    this.web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
+    web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
       if (!error) {
         
         var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
@@ -115,7 +109,7 @@ class App extends React.Component{
     }
 
     });
-    this.web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
+    web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
       console.log('D',data);
     });
   }
@@ -132,12 +126,11 @@ class App extends React.Component{
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   retrieveTransactionData(transArray){
-    console.log('TA',transArray);
     const promiseArray = transArray.map((p, i)=>{
       
       if(i <= 5){
         return new Promise((resolve, reject)=>{
-          this.web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
+          web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){
               console.log('ERR', err);
               reject(err);
@@ -150,7 +143,6 @@ class App extends React.Component{
     });
 
 
-    console.log('pa', promiseArray);
     return Promise.all(promiseArray)
     .then((values) =>{
       //console.log('BC data', values);

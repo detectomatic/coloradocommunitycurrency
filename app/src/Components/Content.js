@@ -2,6 +2,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 // LIBRARIES
+import PropTypes from 'prop-types';
 import { NotificationContainer } from 'react-notifications';
 // COMPONENTS
 import TransactionTable from '~/Components/TransactionTable/TransactionTable';
@@ -14,21 +15,21 @@ import Demo from '~/Components/Demo';
 export default class Content extends React.Component{
 
   // Only render these pages if the user is logged in
-  renderUserSensitivePages(){
-    if (!this.props.loggedIn) {
-      return <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} />
+  _renderUserSensitivePages(){
+    if (!this.props.state.loggedIn) {
+      return <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.state.loggedIn} handleLogin={this.props.handleLogin} />
     }
     return [
       <Route key="root" exact path={`${APP_ROOT}`} component={() => (<Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={this.props.sendMoney} readBalance={this.props.readBalance} />)}  />,
       <Route key="transactions" path={`${APP_ROOT}transactions`} component={() => (<TransactionTable retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} />)} />,
-      <Route key="account" path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
+      <Route key="account" path={`${APP_ROOT}account`} component={() => ( <Account email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
     ];
   }
 
   // This component should only update when the action taken isn't a modal toggle
   // This resolves a bug with everything reloading every time the modal is toggled.
   shouldComponentUpdate(nextProps, nextState){
-    if(this.props.modalOpen !== nextProps.modalOpen){
+    if(this.props.state.modalOpen !== nextProps.state.modalOpen){
       return false;
     }
     return true;
@@ -47,16 +48,33 @@ export default class Content extends React.Component{
               <Route path={`/explorer`} />
 
               {/* Login */}
-              <Route path={`${APP_ROOT}login`} component={() => ( <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} /> )} />
+              <Route path={`${APP_ROOT}login`} component={() => ( <Login handleLogin={this.props.handleLogin} loggedIn={this.props.state.loggedIn} modifyAppState={this.props.modifyAppState} /> )} />
               {/* Register */}
               <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
               
               {/* The pages below are only accessible if the user is logged in */}
               {/* Account, Transactions, Demo */}
-              { this.renderUserSensitivePages()}
+              { this._renderUserSensitivePages()}
               
           </Switch>
         </div>
     );
   }
 }
+
+// Prop-Types
+Content.propTypes = {
+  createNotification : PropTypes.func.isRequired,
+  handleLogin : PropTypes.func.isRequired,
+  modifyAppState : PropTypes.func.isRequired,
+  retrieveTransactionData : PropTypes.func.isRequired,
+  retrieveSentHashes : PropTypes.func.isRequired,
+  retrieveReceivedHashes : PropTypes.func.isRequired,
+  state : PropTypes.shape({
+    loggedIn : PropTypes.bool.isRequired,
+    publicEthKey : PropTypes.string.isRequired,
+    email : PropTypes.string.isRequired,
+    cookie : PropTypes.string,
+    modalOpen : PropTypes.bool.isRequired
+  }).isRequired
+};

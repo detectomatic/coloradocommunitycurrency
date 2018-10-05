@@ -26,7 +26,6 @@ class App extends React.Component{
     this.state = {
       // User details
       loggedIn : false,
-      balance : '',
       publicEthKey : '',
       email : '',
       // Cookies saved on client
@@ -38,14 +37,14 @@ class App extends React.Component{
 
   // Helper method to set state and call a callback function if it exists
   // Used for some child components to update the state without throwing a react memory leak error
-  modifyAppState(state, cb){
+  _modifyAppState(state, cb){
     this.setState(()=>(Object.assign(this.state, state)), ()=>{
       if(cb) cb();
     });
   }
 
   // Initialize Web 3 to communicate with the blockchain
-  initWeb3(){
+  _initWeb3(){
     // Check if Web 3 has been injected by the browser
     // Use Browser/metamask version
     if(typeof web3 !== 'undefined'){
@@ -64,23 +63,23 @@ class App extends React.Component{
   }
 
   // Read the balance of an account
-  readBalance(){
-    web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
-      if (!error) {
+  // _readBalance(){
+  //   web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
+  //     if (!error) {
         
-        var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
-        console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
-        this.setState(()=>({balance}));
-    }
+  //       var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
+  //       console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
+  //       this.setState(()=>({balance}));
+  //   }
 
-    });
-    web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
-      console.log('D',data);
-    });
-  }
+  //   });
+  //   web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
+  //     console.log('D',data);
+  //   });
+  // }
   
   // Send DCoin to a specific user
-  sendMoney(to, value){
+  _sendMoney(to, value){
 
     // Get specific Eth Account
     web3.eth.getCoinbase((err, from) => {
@@ -122,18 +121,18 @@ class App extends React.Component{
   }
 
   // Retrieve the SENT transaction hashes for this user
-  retrieveSentHashes(){
+  _retrieveSentHashes(){
     return retrieveSentHashes(this.state.publicEthKey);
 
   }
 
   // Retrieve the RECEIVED transaction hashes for this user
-  retrieveReceivedHashes(){
+  _retrieveReceivedHashes(){
     return retrieveReceivedHashes(this.state.publicEthKey);
   }
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
-  retrieveTransactionData(transArray){
+  _retrieveTransactionData(transArray){
     const promiseArray = transArray.map((p, i)=>{
       if(i <= 5){
         return new Promise((resolve, reject)=>{
@@ -156,7 +155,7 @@ class App extends React.Component{
   }
 
   // Handle login to node backend on google cloud
-  handleLogin(doLogin, email, password){
+  _handleLogin(doLogin, email, password){
     if(doLogin){
       return login({ email, password })
       .then((data)=>{console.log('AUTH data', data);
@@ -193,7 +192,7 @@ class App extends React.Component{
 
   // Create a notification of a specified type with specified message
   // Used Mainly on login and transaction table
-  createNotification(type, message){
+  _createNotification(type, message){
     switch (type) {
       case 'info':
         NotificationManager.info(message, 'Important!', 1200);
@@ -208,7 +207,7 @@ class App extends React.Component{
   }
 
   // Toggle the Transaction Modal open & closed
-  toggleModal(){
+  _toggleModal(){
     this.setState({ modalOpen : !this.state.modalOpen });
   }
 
@@ -221,7 +220,7 @@ class App extends React.Component{
       loggedIn()
       .then((data) =>{
         this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
-        this.initWeb3();
+        this._initWeb3();
       })
     } 
   }
@@ -230,11 +229,20 @@ class App extends React.Component{
   render(){
     return(
       <div>
-        <Header toggleModal={ this.toggleModal.bind(this) } loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
+        <Header handleLogin={this._handleLogin.bind(this)} loggedIn={ this.state.loggedIn } toggleModal={ this._toggleModal.bind(this) } />
         <Subheader />
-        <Content modalOpen={ this.state.modalOpen } state={this.state} loggedIn={ this.state.loggedIn } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } retrieveSentHashes={ this.retrieveSentHashes.bind(this) } retrieveReceivedHashes={ this.retrieveReceivedHashes.bind(this) } handleLogin={this.handleLogin.bind(this)}  modifyAppState={this.modifyAppState.bind(this)} />
-        <Modal sendMoney={ this.sendMoney.bind(this) } toggleModal={ this.toggleModal.bind(this) } modalOpen={ this.state.modalOpen } />
+        <Content 
+          createNotification={this._createNotification.bind(this)} 
+          handleLogin={this._handleLogin.bind(this)} 
+          modifyAppState={this._modifyAppState.bind(this)} 
+          retrieveTransactionData={ this._retrieveTransactionData.bind(this) } 
+          retrieveSentHashes={ this._retrieveSentHashes.bind(this) } 
+          retrieveReceivedHashes={ this._retrieveReceivedHashes.bind(this) } 
+          state={ this.state } 
+        />
         <Footer />
+        {/* Render modal if user is logged in */}
+        { this.state.loggedIn ? <Modal modalOpen={ this.state.modalOpen } sendMoney={ this._sendMoney.bind(this) } toggleModal={ this._toggleModal.bind(this) } /> : null }
       </div>
     );
   }

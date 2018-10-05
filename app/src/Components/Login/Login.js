@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 // LIBRARIES
 import PropTypes from 'prop-types';
 // COMMON
-import { login, logout } from '~/common/loginService';
 import history from '~/common/history';
 // ASSETS
 import '~/assets/scss/forms.scss';
@@ -13,6 +12,7 @@ import '~/assets/scss/forms.scss';
 export default class Login extends React.Component{
     constructor(){
         super();
+        // Component state used to handle form functionality
         this.state = {
             email : '',
             password : '',
@@ -20,13 +20,8 @@ export default class Login extends React.Component{
         };
     }
 
-    // Handle logging out of the app
-    handleLogout(){
-        logout();
-    }
-
     // Handle change of form elements and update states
-    handleChange(e){
+    _handleChange(e){
         const newState = {};
         newState[e.target.name] = e.target.value;
         this.setState(() => (newState));
@@ -34,7 +29,7 @@ export default class Login extends React.Component{
 
     // Handle submit of form: send form data to back end, which handles app login logic
     // If login success, navigate to user-collection, otherwise display error message
-    handleSubmit(e){
+    _handleSubmit(e){
         e.preventDefault();
 
         if(this.state.errors.length){
@@ -47,7 +42,7 @@ export default class Login extends React.Component{
                 const errors = data.error.map((e) =>{
                     return {type:e.type, message:e.message}
                 });
-                this.handleErrors(errors);
+                this._handleErrors(errors);
             }else{
                 this.props.modifyAppState({
                     loggedIn : true, 
@@ -63,18 +58,18 @@ export default class Login extends React.Component{
         })
         .catch((error) =>{
             if(error){
-                this.handleErrors([{type:error.type, message:error.message}])
+                this._handleErrors([{type:error.type, message:error.message}])
             }
         });
     }
 
     // Handle errors from server
-    handleErrors(errors){
+    _handleErrors(errors){
         this.setState(()=>({errors : [...this.state.errors, ...errors]}));
     }
 
     // Render alert status messages
-    renderAlertSection(){
+    _renderAlertSection(){
         if(this.state.errors.length){
             const errorEls = this.state.errors.map((error, i) =>(
                     <div className="notification notification-error" key={i}>
@@ -87,7 +82,7 @@ export default class Login extends React.Component{
     }
 
     // Render success alert message
-    renderSuccessSection(){
+    _renderSuccessSection(){
         if(this.props.loggedIn){
             return(
                 <div className="notification notification-success">
@@ -108,21 +103,21 @@ export default class Login extends React.Component{
                     </div>
                 </section>
                 <section className="alert-section">
-                    {this.renderAlertSection()}
-                    {this.renderSuccessSection()}
+                    {this._renderAlertSection()}
+                    {this._renderSuccessSection()}
                 </section>
                 <section className="form-section">
-                    <form id="loginForm" onSubmit={this.handleSubmit.bind(this)}>
+                    <form id="loginForm" onSubmit={this._handleSubmit.bind(this)}>
                         <div className="input_container">
                         <label>
                                 <strong>Email:</strong>
-                                <input name="email" type="email" value={this.state.email} onChange={this.handleChange.bind(this)} placeholder="Enter Email" minLength="4" maxLength="100" required />
+                                <input name="email" type="email" value={this.state.email} onChange={this._handleChange.bind(this)} placeholder="Enter Email" minLength="4" maxLength="100" required />
                             </label>
                         </div>
                         <div className="input_container">
                             <label>
                                 <strong>Password:</strong>
-                                <input name="password" type="password" value={this.state.password} onChange={this.handleChange.bind(this)} placeholder="Enter Password" minLength="8" maxLength="100" required />
+                                <input name="password" type="password" value={this.state.password} onChange={this._handleChange.bind(this)} placeholder="Enter Password" minLength="8" maxLength="100" required />
                             </label>
                         </div>
                         <div className="input_container register_button_container">
@@ -142,8 +137,8 @@ export default class Login extends React.Component{
 }
 
 // PROP-TYPES
-// Login.propTypes = {
-//     loggedIn : PropTypes.bool.isRequired,
-//     modifyAppState : PropTypes.func.isRequired,
-//     handleLogin : PropTypes.func.isRequired
-// };
+Login.propTypes = {
+    handleLogin : PropTypes.func.isRequired,
+    loggedIn : PropTypes.bool.isRequired,
+    modifyAppState : PropTypes.func.isRequired
+};

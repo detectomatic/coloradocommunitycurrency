@@ -1,6 +1,7 @@
 // REACT
 import React from 'react';
 // LIBRARIES
+import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { MdDone, MdClear } from 'react-icons/md';
 // ASSETS
@@ -18,7 +19,7 @@ export default class TransactionModal extends React.Component{
   }
 
   // Submit Handler for form modal
-  submitHandler(e){
+  _submitHandler(e){
     e.preventDefault();
     if(!this.state.address || !this.state.amount){
       return;
@@ -27,7 +28,7 @@ export default class TransactionModal extends React.Component{
   }
 
   // Handle change of address value
-  handleChange(e){
+  _handleChange(e){
     if(e.target.id === 'amount'){
       this.setState({amount : e.target.value});
     }else if(e.target.id === 'address'){
@@ -37,7 +38,7 @@ export default class TransactionModal extends React.Component{
   }
 
   // Generate react element for the indicator next to the address input
-  renderIndicator(){
+  _renderIndicator(){
     if(this.state.address.length === 0){
       return;
     }else if(this.state.address.length === 42){
@@ -54,13 +55,12 @@ export default class TransactionModal extends React.Component{
   // Render Component
   render(){
     return (
-     
       <div className={ this.props.modalOpen ? 'show' : 'hide' }>
         <div className="modal-backdrop" onClick={ this.props.toggleModal }></div>
         <div className="modal" tabIndex="-1" role="dialog">
           <div className="modal-dialog" role="document">
             <div className="modal-content">
-              <form onSubmit={this.submitHandler.bind(this)}>
+              <form onSubmit={this._submitHandler.bind(this)}>
                 <div className="modal-header">
                   <h5 className="modal-title">Send DCoin</h5>
                   <button type="button" className="close" onClick={ this.props.toggleModal }>
@@ -70,13 +70,13 @@ export default class TransactionModal extends React.Component{
                 <div className="modal-body">
                   <div className="input_container amount_input_container">
                     <label htmlFor="amount"><strong>Amount (in DCoin):</strong></label><br />
-                    <input id="amount" value={this.state.amount} onChange={this.handleChange.bind(this)} type="number" placeholder="Enter Amount" />
+                    <input id="amount" value={this.state.amount} onChange={this._handleChange.bind(this)} type="number" placeholder="Enter Amount" />
                   </div>
                   <div className="input_container address_input_container">
                       <label htmlFor="address"><strong>DCoin Address:</strong></label><br />
-                      <input id="address" value={this.state.address} onChange={this.handleChange.bind(this)} type="text" placeholder="Enter Address" maxLength="42" />
+                      <input id="address" value={this.state.address} onChange={this._handleChange.bind(this)} type="text" placeholder="Enter Address" maxLength="42" />
                       <span className="icon-span">
-                        { this.renderIndicator() }
+                        { this._renderIndicator() }
                       </span>
                   </div>
                 </div>
@@ -93,7 +93,13 @@ export default class TransactionModal extends React.Component{
         {/* Tooltip Plugin */}
         <ReactTooltip />
       </div>
-     
     );
   }
 }
+
+// PROP-TYPES
+TransactionModal.propTypes = {
+  modalOpen : PropTypes.bool.isRequired,
+  toggleModal : PropTypes.func.isRequired,
+  sendMoney : PropTypes.func.isRequired
+};

@@ -21,7 +21,7 @@ header{
           transition: color .25s ease-in-out;
           cursor: pointer;
           &:hover{
-            color: $hover_text !important;
+            color: $hover_text;
           }
           &.active{
             color: $active_text;
@@ -35,6 +35,12 @@ header{
             &:hover{
               
               
+            }
+          }
+          &.disabled{
+            &:hover{
+              color : $very_light_text;
+              cursor : default;
             }
           }
         }

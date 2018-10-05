@@ -1,6 +1,7 @@
 // REACT
 import React from 'react';
 // LIBRARIES
+import PropTypes from 'prop-types';
 import { utils, providers } from 'web3';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
@@ -28,7 +29,7 @@ export default class TransactionTable extends React.Component{
   }
 
   // Copies an address to the clipboard of the user by clicking on it or the icon
-  copyAddress(address){
+  _copyAddress(address){
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
     dummy.setAttribute('value', address);
@@ -40,7 +41,7 @@ export default class TransactionTable extends React.Component{
   }
 
   // Constructs the transaction rows based on sent / received data and returns them to be rendered
-  renderTransactionRows(){
+  _renderTransactionRows(){
       let transactionEls;
       
       // SENT
@@ -67,13 +68,13 @@ export default class TransactionTable extends React.Component{
               </td>
               <td className="address_cell">
                 <div>
-                  <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.to)}>
+                  <span className={`address_container address-container_${i}`} onClick={this._copyAddress.bind(this, trans.to)}>
                     <strong>{trans.to}</strong>
                   </span>
                 </div>
                 <div>
                 {
-                  <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.sentHashes[i])}>
+                  <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._copyAddress.bind(this, this.state.sentHashes[i])}>
                     {this.state.sentHashes[i].hash}
                   </span>
                 }
@@ -81,10 +82,10 @@ export default class TransactionTable extends React.Component{
               </td>
               <td  className="copy_cell">
                 <div  data-tip="Copy Address to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this._copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
                 </div>
                 <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.sentHashes[i].hash)}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.sentHashes[i].hash)}><MdContentCopy /></span>
                 </div>
               </td>
               <td  className="amount_cell">
@@ -123,13 +124,13 @@ export default class TransactionTable extends React.Component{
               </td>
               <td className="address_cell">
                 <div>
-                  <span className={`address_container address-container_${i}`} onClick={this.copyAddress.bind(this, trans.from)}>
+                  <span className={`address_container address-container_${i}`} onClick={this._copyAddress.bind(this, trans.from)}>
                     <strong>{trans.from}</strong>
                   </span>
                 </div>
                 <div>
                   {
-                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this.copyAddress.bind(this, this.state.receivedHashes[i].hash)}>
+                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._copyAddress.bind(this, this.state.receivedHashes[i].hash)}>
                       {this.state.receivedHashes[i].hash}
                     </span>
                   }
@@ -137,10 +138,10 @@ export default class TransactionTable extends React.Component{
               </td>
               <td  className="copy_cell">
                 <div  data-tip="Copy Address to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this._copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
                 </div>
                 <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this.copyAddress.bind(this, this.state.receivedHashes[i].hash)}><MdContentCopy /></span>
+                  <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.receivedHashes[i].hash)}><MdContentCopy /></span>
                 </div>
               </td>
               <td  className="amount_cell">
@@ -162,27 +163,33 @@ export default class TransactionTable extends React.Component{
   // First, fetches the transaction hashes of the user from the DB,
   // Then fetches the transaction data off the blockchain based on the hashes.
   // Finally, sets the state with all the aquired data
-  retrieveTableData(button){
+  _retrieveTableData(button){
     // If SENT button is selected and there are no transactions yet fetched
-    if(button === 'sent' && !this.state.sent.length){
+    if(button === 'sent'){
       this.setState({sentActive : true});
-      this.props.retrieveSentHashes()
-      .then((data) =>{
-        this.props.retrieveTransactionData(data.data)
-        .then((transaction)=>{
-          this.setState(()=>({sent : transaction, sentHashes : data.data}));
-        })
-      });
+      // Only do AJAX calls for data if we don't already have it
+      if(!this.state.sent.length){
+        this.props.retrieveSentHashes()
+        .then((data) =>{
+          this.props.retrieveTransactionData(data.data)
+          .then((transaction)=>{
+            this.setState(()=>({sent : transaction, sentHashes : data.data}));
+          })
+        });
+      }
     // If RECEIVED button is selected and there are no transactions yet fetched
-    }else if(button === 'received' && !this.state.received.length){
+    }else if(button === 'received'){
       this.setState({sentActive : false});
-      this.props.retrieveReceivedHashes()
-      .then((data) =>{
-        this.props.retrieveTransactionData(data.data)
-        .then((transaction)=>{
-          this.setState(()=>({received : transaction, receivedHashes : data.data}));
-        })
-      });
+      // Only do AJAX calls for data if we don't already have it
+      if(!this.state.received.length){
+        this.props.retrieveReceivedHashes()
+        .then((data) =>{
+          this.props.retrieveTransactionData(data.data)
+          .then((transaction)=>{
+            this.setState(()=>({received : transaction, receivedHashes : data.data}));
+          })
+        });
+      }
     }
 
     return;
@@ -190,7 +197,7 @@ export default class TransactionTable extends React.Component{
 
   // When Component mounts, kick off the sequence of retrieving user transaction data
   componentDidMount() {
-    this.retrieveTableData('sent');
+    this._retrieveTableData('sent');
   }
 
   // When the Component updates, we need to reload the tooltip plugin since it doesn't
@@ -211,8 +218,8 @@ export default class TransactionTable extends React.Component{
         <section className="controls-section">
           <div className="btn-group">
             {/* Toggle active button based on the state of the app */}
-            <button className={ this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('sent')}}>Sent</button>
-            <button className={ !this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('received')}}>Received</button>
+            <button className={ this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this._retrieveTableData('sent')}}>Sent</button>
+            <button className={ !this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this._retrieveTableData('received')}}>Received</button>
           </div>
         </section>
         <section className="table-section">
@@ -226,7 +233,7 @@ export default class TransactionTable extends React.Component{
             </thead>
             <tbody>
               {/* Dynamically render all transaction rows for user */}
-              {this.renderTransactionRows()}
+              {this._renderTransactionRows()}
             </tbody>
           </table>
         </section>
@@ -235,4 +242,12 @@ export default class TransactionTable extends React.Component{
       </div>
     );
   }
+}
+
+//PROP-TYPES
+TransactionTable.propTypes = {
+  createNotification : PropTypes.func.isRequired,
+  retrieveReceivedHashes : PropTypes.func.isRequired,
+  retrieveSentHashes : PropTypes.func.isRequired,
+  retrieveTransactionData : PropTypes.func.isRequired
 }

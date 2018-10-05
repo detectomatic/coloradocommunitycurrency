@@ -1,7 +1,12 @@
+// REACT
 import React from 'react';
-import './Modal.scss';
-import { MdDone, MdClear } from 'react-icons/md';
+// LIBRARIES
 import ReactTooltip from 'react-tooltip';
+import { MdDone, MdClear } from 'react-icons/md';
+// ASSETS
+import './Modal.scss';
+
+// COMPONENT
 export default class TransactionModal extends React.Component{
   constructor(){
     super();

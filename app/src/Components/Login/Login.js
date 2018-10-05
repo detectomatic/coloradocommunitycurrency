@@ -53,7 +53,8 @@ export default class Login extends React.Component{
                 //console.log('li1',this.props.loggedIn);
                 this.props.modifyAppState({
                     loggedIn : true, 
-                    publicEthKey : data.publicEthKey
+                    publicEthKey : data.publicEthKey,
+                    email : data.email
                 }, () =>{
                     setTimeout(()=>{
                         history.push(`${APP_ROOT}transactions`);
@@ -142,8 +143,8 @@ export default class Login extends React.Component{
 }
 
 // PROP-TYPES
-Login.propTypes = {
-    loggedIn : PropTypes.bool.isRequired,
-    modifyAppState : PropTypes.func.isRequired,
-    handleLogin : PropTypes.func.isRequired
-};
+// Login.propTypes = {
+//     loggedIn : PropTypes.bool.isRequired,
+//     modifyAppState : PropTypes.func.isRequired,
+//     handleLogin : PropTypes.func.isRequired
+// };

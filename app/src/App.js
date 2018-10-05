@@ -10,7 +10,8 @@ import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import Modal from '~/Components/Modal/Modal';
-import { login, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/loginService';
+import { login, logout, loggedIn } from '~/common/loginService';
+import { retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/transactionService';
 import 'react-notifications/lib/notifications.css';
 import { withCookies } from 'react-cookie';
 
@@ -24,6 +25,7 @@ class App extends React.Component{
       balance : '',
       numTransactions : null,
       publicEthKey : '',
+      email : '',
       cookie : '',
       modalOpen : false
     }
@@ -220,8 +222,8 @@ class App extends React.Component{
     const cookie = this.props.cookies.get('sid');
     if(cookie !== undefined) {
       this.loggedIn()
-      .then((data) =>{
-        this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey });
+      .then((data) =>{console.log('!!!!!', data);
+        this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
         this.initWeb3();
       })
       
@@ -235,7 +237,7 @@ class App extends React.Component{
       <div>
         <Header toggleModal={ this.toggleModal.bind(this) } loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content modalOpen={ this.state.modalOpen } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } checkLoggedIn={this.loggedIn.bind(this)} modifyAppState={this.modifyAppState.bind(this)} loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)}  balance={this.state.balance} createNotification={this.createNotification.bind(this)} sendMoney={this.sendMoney.bind(this)} retrieveSentHashes={this.retrieveSentHashes.bind(this)} retrieveReceivedHashes={this.retrieveReceivedHashes.bind(this)} />
+        <Content modalOpen={ this.state.modalOpen } state={this.state} loggedIn={ this.state.loggedIn } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } retrieveSentHashes={ this.retrieveSentHashes.bind(this) } retrieveReceivedHashes={ this.retrieveReceivedHashes.bind(this) } checkLoggedIn={this.loggedIn.bind(this)}  handleLogin={this.handleLogin.bind(this)}  modifyAppState={this.modifyAppState.bind(this)} />
         <Modal sendMoney={ this.sendMoney.bind(this) } toggleModal={ this.toggleModal.bind(this) } modalOpen={ this.state.modalOpen } />
         
         <Footer />

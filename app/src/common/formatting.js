@@ -1,3 +1,4 @@
+// LIBRARIES
 import dateFns from 'date-fns';
 
 function formatDate(dateTime){
@@ -5,6 +6,7 @@ function formatDate(dateTime){
   console.log(d);
   return d;
 }
+
 function formatTime(dateTime){
   const t = dateFns.format(dateTime, 'hh:mm A');
   console.log(t);

@@ -1,13 +1,16 @@
+// REACT
 import React from 'react';
 import { Switch, Route } from 'react-router';
+// LIBRARIES
 import { NotificationContainer } from 'react-notifications';
+// COMPONENTS
 import TransactionTable from '~/Components/TransactionTable/TransactionTable';
 import Account from '~/Components/Account/Account';
 import Login from '~/Components/Login/Login';
 import Register from '~/Components/Register/Register';
 import Demo from '~/Components/Demo';
 
-
+// COMPONENT
 export default class Content extends React.Component{
   requireAuth(){
     if (!authenticated) {
@@ -44,7 +47,7 @@ export default class Content extends React.Component{
                   
                 )} 
               />
-              <Route path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} /> )} />
+              <Route path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
               <Route path={`${APP_ROOT}login`} component={() => ( <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} /> )} />
               <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
               <Route path={`${APP_ROOT}demo`} component={() => ( <Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={ this.sendMoney } readBalance={this.props.readBalance} checkLoggedIn={this.props.checkLoggedIn} />)} />

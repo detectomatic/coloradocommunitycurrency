@@ -1,7 +1,9 @@
+// REACT
 import React from 'react';
-import Nav from './Nav';
+// ASSETS
 import './header.scss';
 
+// COMPONENT
 export default class Subheader extends React.Component{
 
   render(){

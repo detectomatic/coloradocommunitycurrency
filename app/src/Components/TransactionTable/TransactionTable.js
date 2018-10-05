@@ -1,11 +1,16 @@
+// REACT
 import React from 'react';
+// LIBRARIES
+import { utils, providers } from 'web3';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
-import { utils, providers } from 'web3';
+// COMMON
 import { formatDate, formatTime } from '~/common/formatting.js';
+// ASSETS
 import './TransactionTable.scss';
-export default class TransactionTable extends React.Component{
 
+// COMPONENT
+export default class TransactionTable extends React.Component{
   constructor(){
     super();
     this.state = {
@@ -16,6 +21,7 @@ export default class TransactionTable extends React.Component{
       activeButton : '',
     }
   }
+
   copyAddress(address){
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
@@ -28,7 +34,6 @@ export default class TransactionTable extends React.Component{
   }
 
   renderTransactionRows(){
-      
       let transactionEls;
       // SENT
       if(this.state.activeButton === 'sent'){

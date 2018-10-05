@@ -1,8 +1,12 @@
+// REACT
 import React from 'react';
+// COMPONENTS
 import Nav from './Nav';
+// ASSETS
 import './header.scss';
 import Logo from '~/assets/images/logo.png';
 
+// COMPONENT
 export default class Header extends React.Component{
 
   render(){

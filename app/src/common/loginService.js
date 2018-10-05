@@ -1,6 +1,9 @@
+// LIBRARIES
 import axios from 'axios';
-const endpoint = process.env.NODE_ENV === 'production' ?  'https://eco-allies.herokuapp.com/' : 'http://localhost:3001/';
-//const endpoint = process.env.NODE_ENV === 'production' ?  'https://eco-allies.herokuapp.com/' : 'https://eco-allies.herokuapp.com/';
+
+const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/';
+
+// Login via Node backend
 const login = function(formData){
     return axios.post(`${endpoint}login`,{email: formData.email, password: formData.password}, {withCredentials:true})
     .then((data) => {console.log('data', data);
@@ -23,6 +26,7 @@ const login = function(formData){
     })
 };
 
+// Register new account via Node backend
 const register = function(formData){
     return axios.post(`${endpoint}register`,formData)
     .then((data) => {console.log('data!', data);
@@ -44,15 +48,8 @@ const register = function(formData){
     })
 };
 
+// Logout via Node backend
 const logout = function(){
-    // const getCookie = (name) => {
-    //     return document.cookie.split('; ').reduce((r, v) => {
-    //       const parts = v.split('=')
-    //       return parts[0] === name ? decodeURIComponent(parts[1]) : r
-    //     }, '')
-    //   }
-
-
     return axios.get(`${endpoint}logout`, {withCredentials:true})
     .then((data) => {console.log('in lo');
         if(data.status === 200){
@@ -74,6 +71,7 @@ const logout = function(){
     })
 };
 
+// Check if user is logged in
 const loggedIn = function(){
     return axios.get(`${endpoint}logged-in`, {withCredentials:true})
     .then((data) => {
@@ -85,50 +83,4 @@ const loggedIn = function(){
     });
 };
 
-const accountDetails = function(){
-    return axios.get(`${endpoint}account-details`, {withCredentials:true})
-    .then((data) => {
-        //console.log('AD data', data);
-        return data;
-    })
-    .catch((error)=>{
-        console.log('AD error', error);
-    });
-};
-
-const retrieveSentHashes = function(address){console.log('sent ad',address);
-    return axios.post(`${endpoint}retrieve-sent-hashes`, { address }, {withCredentials:true})
-    .then((data) => {
-        console.log('SENT TRANSACTIONS:', data);
-        return data;
-    })
-    .catch((error)=>{
-        console.log('AD error', error);
-    });
-};
-
-const retrieveReceivedHashes = function(address){
-    console.log('address', address);
-    return axios.post(`${endpoint}retrieve-received-hashes`, { address }, {withCredentials:true})
-    .then((data) => {
-        console.log('RECEIVED TRANSACTIONS:', data);
-        return data;
-    })
-    .catch((error)=>{
-        console.log('AD error', error);
-    });
-};
-
-const saveNewHash = function(from, to, hash){
-    return axios.post(`${endpoint}save-new-hash`, { from, to, hash }, { withCredentials:true })
-    .then((data) => {
-        console.log('Saved this data:', data);
-        return data;
-    })
-    .catch((error)=>{
-        console.log('AD error', error);
-    });
-}
-
-
-export { login, register, logout, loggedIn, accountDetails, retrieveSentHashes, retrieveReceivedHashes, saveNewHash }
+export { login, register, logout, loggedIn }

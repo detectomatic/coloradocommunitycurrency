@@ -1,7 +1,9 @@
+// REACT
 import React from 'react';
 
+// COMPONENT
 export default class Demo extends React.Component{
-  render(){console.log('PS', this.props);
+  render(){
     return(
       <div>
         <h1>DCOIN Dashboard</h1>

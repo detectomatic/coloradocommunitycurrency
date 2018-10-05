@@ -1,16 +1,19 @@
+// REACT
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+// LIBRARES
 import { FaUserCircle } from 'react-icons/fa';
+// ASSETS
 import './header.scss';
 
+// COMPONENT
 export default class Nav extends React.Component{
-
   constructor(){
-    super();
-    this.state = {
-        open: false,
-    };
-}
+        super();
+        this.state = {
+            open: false,
+        };
+    }
 
   // Sets state that toggles the open / close of the account subnav
   handleToggle() {

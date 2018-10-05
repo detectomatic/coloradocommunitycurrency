@@ -9,6 +9,7 @@ import Logo from '~/assets/images/logo.png';
 // COMPONENT
 export default class Header extends React.Component{
 
+  // Render Component
   render(){
     return(
       <header>

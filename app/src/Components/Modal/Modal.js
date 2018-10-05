@@ -10,6 +10,7 @@ import './Modal.scss';
 export default class TransactionModal extends React.Component{
   constructor(){
     super();
+    // The state for the component is used to handle form functionality
     this.state = {
         address : "",
         amount : ""
@@ -35,6 +36,7 @@ export default class TransactionModal extends React.Component{
 
   }
 
+  // Generate react element for the indicator next to the address input
   renderIndicator(){
     if(this.state.address.length === 0){
       return;
@@ -44,10 +46,12 @@ export default class TransactionModal extends React.Component{
     return <span className="incomplete" data-tip="Address must be 42 Characters Long"><MdClear /></span>;
   }
 
+  // When component updates, we need to reload the tooltip plugin, otherwise it doesn't work in the modal
   componentDidUpdate(){
     ReactTooltip.rebuild();
   }
 
+  // Render Component
   render(){
     return (
      
@@ -86,6 +90,7 @@ export default class TransactionModal extends React.Component{
             </div>
           </div>
         </div>
+        {/* Tooltip Plugin */}
         <ReactTooltip />
       </div>
      

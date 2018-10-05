@@ -1,15 +1,15 @@
 // LIBRARIES
 import dateFns from 'date-fns';
 
+// Format the timestamp passed in to show a reader-friendly DATE
 function formatDate(dateTime){
   const d = dateFns.format(dateTime, 'MM/DD/YYYY');
-  console.log(d);
   return d;
 }
 
+// Format the timestamp passed in to show a reader-friendly TIME
 function formatTime(dateTime){
   const t = dateFns.format(dateTime, 'hh:mm A');
-  console.log(t);
   return t;
 }
 

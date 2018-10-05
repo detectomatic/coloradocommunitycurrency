@@ -1,32 +1,37 @@
+// REACT
 import React from 'react';
 import { withRouter } from 'react-router';
+// LIBRARIES
 import { utils, providers } from 'web3';
 import { NotificationManager } from 'react-notifications';
 import history from '~/common/history';
+import { withCookies } from 'react-cookie';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '~/assets/scss/styles.scss';
+import 'react-notifications/lib/notifications.css';
+// COMPONENTS
 import Header from '~/Components/Header/Header';
 import Subheader from '~/Components/Header/Subheader';
 import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import Modal from '~/Components/Modal/Modal';
+// COMMON
 import { login, logout, loggedIn } from '~/common/loginService';
 import { retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/transactionService';
-import 'react-notifications/lib/notifications.css';
-import { withCookies } from 'react-cookie';
-
-
+// ASSETS
+import '~/assets/scss/styles.scss';
 
 class App extends React.Component{
   constructor(){
     super();
     this.state = {
+      // User details
       loggedIn : false,
       balance : '',
-      numTransactions : null,
       publicEthKey : '',
       email : '',
+      // Cookies saved on client
       cookie : '',
+      // Indicates whether the modal is open or closed
       modalOpen : false
     }
   }
@@ -35,7 +40,6 @@ class App extends React.Component{
   // Used for some child components to update the state without throwing a react memory leak error
   modifyAppState(state, cb){
     this.setState(()=>(Object.assign(this.state, state)), ()=>{
-      console.log('updated app state', this.state);
       if(cb) cb();
     });
   }
@@ -59,18 +63,33 @@ class App extends React.Component{
     console.log('web3 is connected ',web3.isConnected());
   }
 
+  // Read the balance of an account
+  readBalance(){
+    web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
+      if (!error) {
+        
+        var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
+        console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
+        this.setState(()=>({balance}));
+    }
+
+    });
+    web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
+      console.log('D',data);
+    });
+  }
+  
+  // Send DCoin to a specific user
   sendMoney(to, value){
 
     // Get specific Eth Account
     web3.eth.getCoinbase((err, from) => {
-      console.log('ACC',from);
       // Send money to address
       web3.eth.sendTransaction({
         from,
         to,
         value : web3.toWei(value, "ether"), 
       }, (error, hash)=>{
-        console.log('sent', from);
         saveNewHash(from, to, hash)
         .then((response) =>{
           console.log('success!', response);
@@ -101,27 +120,14 @@ class App extends React.Component{
 
     });
   }
-  readBalance(){
-    web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
-      if (!error) {
-        
-        var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
-        console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
-        this.setState(()=>({balance}));
-    }
 
-    });
-    web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
-      console.log('D',data);
-    });
-  }
-
+  // Retrieve the SENT transaction hashes for this user
   retrieveSentHashes(){
-    console.log('pub eth key',this.state.publicEthKey);
     return retrieveSentHashes(this.state.publicEthKey);
 
   }
 
+  // Retrieve the RECEIVED transaction hashes for this user
   retrieveReceivedHashes(){
     return retrieveReceivedHashes(this.state.publicEthKey);
   }
@@ -129,7 +135,6 @@ class App extends React.Component{
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   retrieveTransactionData(transArray){
     const promiseArray = transArray.map((p, i)=>{
-      
       if(i <= 5){
         return new Promise((resolve, reject)=>{
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
@@ -141,23 +146,17 @@ class App extends React.Component{
           });
         });
       }
-      
     });
-
 
     return Promise.all(promiseArray)
     .then((values) =>{
       //console.log('BC data', values);
       return values;
     });
-
-    
-
   }
 
   // Handle login to node backend on google cloud
   handleLogin(doLogin, email, password){
-    //console.log(email, password);
     if(doLogin){
       return login({ email, password })
       .then((data)=>{console.log('AUTH data', data);
@@ -192,58 +191,55 @@ class App extends React.Component{
     }
   }
 
+  // Create a notification of a specified type with specified message
+  // Used Mainly on login and transaction table
   createNotification(type, message){
     switch (type) {
       case 'info':
-        NotificationManager.info(message);
+        NotificationManager.info(message, 'Important!', 1200);
         break;
       case 'success':
         NotificationManager.success(message, 'Success!', 1200);
         break;
-      case 'warning':
-        NotificationManager.warning(message, 'Close after 3000ms', 3000);
-        break;
       case 'error':
-        NotificationManager.error(message, 'Click me!', 3000);
+        NotificationManager.error(message, 'Error!', 1200);
         break;
     }
   }
 
-  loggedIn(){
-    return loggedIn();
-  }
-
+  // Toggle the Transaction Modal open & closed
   toggleModal(){
     this.setState({ modalOpen : !this.state.modalOpen });
   }
 
-  componentWillMount(){
-    
+  // When Component mounts, check if user is already logged in by 
+  // checking for a  client cookie and checking with node backend.
+  // If logged in, set state to the user's data
+  componentWillMount(){ 
     const cookie = this.props.cookies.get('sid');
     if(cookie !== undefined) {
-      this.loggedIn()
-      .then((data) =>{console.log('!!!!!', data);
+      loggedIn()
+      .then((data) =>{
         this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
         this.initWeb3();
       })
-      
     } 
   }
 
-
-
+  // Render APP Component
   render(){
     return(
       <div>
         <Header toggleModal={ this.toggleModal.bind(this) } loggedIn={ this.state.loggedIn } handleLogin={this.handleLogin.bind(this)} />
         <Subheader />
-        <Content modalOpen={ this.state.modalOpen } state={this.state} loggedIn={ this.state.loggedIn } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } retrieveSentHashes={ this.retrieveSentHashes.bind(this) } retrieveReceivedHashes={ this.retrieveReceivedHashes.bind(this) } checkLoggedIn={this.loggedIn.bind(this)}  handleLogin={this.handleLogin.bind(this)}  modifyAppState={this.modifyAppState.bind(this)} />
+        <Content modalOpen={ this.state.modalOpen } state={this.state} loggedIn={ this.state.loggedIn } retrieveTransactionData={ this.retrieveTransactionData.bind(this) } retrieveSentHashes={ this.retrieveSentHashes.bind(this) } retrieveReceivedHashes={ this.retrieveReceivedHashes.bind(this) } handleLogin={this.handleLogin.bind(this)}  modifyAppState={this.modifyAppState.bind(this)} />
         <Modal sendMoney={ this.sendMoney.bind(this) } toggleModal={ this.toggleModal.bind(this) } modalOpen={ this.state.modalOpen } />
-        
         <Footer />
       </div>
     );
   }
 }
 
+// App Component must be wrapped in withRouter to handle routing within the app,
+// and must be wrapped in withCookies for access to client's cookie data
 export default withCookies(withRouter(App));

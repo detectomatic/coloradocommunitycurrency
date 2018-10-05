@@ -5,6 +5,8 @@ import './footer.scss';
 
 // COMPONENT
 export default class Footer extends React.Component{
+
+  // Render Component
   render(){
     return(
       <footer>

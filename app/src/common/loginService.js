@@ -1,6 +1,7 @@
 // LIBRARIES
 import axios from 'axios';
-
+// Set AJAX axios endpoint to our server-side node app, 
+// whether that be on localhost or the google cloud for production
 const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/';
 
 // Login via Node backend

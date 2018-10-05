@@ -6,6 +6,7 @@ import './header.scss';
 // COMPONENT
 export default class Subheader extends React.Component{
 
+  // Render Component
   render(){
     return(
       <div>

@@ -43,14 +43,12 @@ export default class Login extends React.Component{
 
         this.props.handleLogin(true, this.state.email, this.state.password)
         .then((data) =>{
-            console.log('in then hs', data);
             if(data.error){
                 const errors = data.error.map((e) =>{
                     return {type:e.type, message:e.message}
                 });
                 this.handleErrors(errors);
             }else{
-                //console.log('li1',this.props.loggedIn);
                 this.props.modifyAppState({
                     loggedIn : true, 
                     publicEthKey : data.publicEthKey,
@@ -100,6 +98,7 @@ export default class Login extends React.Component{
         
     }
 
+    // Render Component
     render(){
         return(
             <div className="page-wrapper form-page login-page">

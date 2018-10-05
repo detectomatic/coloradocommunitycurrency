@@ -11,6 +11,7 @@ import '~/assets/scss/forms.scss';
 export default class Register extends React.Component{
     constructor(){
         super();
+        // This Component state is used to handle form functionality
         this.state = {
             email : '',
             password : '',
@@ -28,7 +29,7 @@ export default class Register extends React.Component{
         this.setState(() => (newState));
     }
 
-    // Handle submit of for form. If success, the backend creates a new account. Otherwise, handle errors
+    // Handle submit form. If success, the backend creates a new account. Otherwise, handle errors
     handleSubmit(e){
         e.preventDefault();
         if(this.state.password === this.state.passwordConfirm){
@@ -37,7 +38,7 @@ export default class Register extends React.Component{
             }
             
             register(this.state)
-            .then((data) =>{//console.log('in then hs', data);
+            .then((data) =>{
                 if(data.error){
                     const errors = data.error.map((e) =>{
                         return {type:e.error.type, message:e.error.message}
@@ -105,7 +106,7 @@ export default class Register extends React.Component{
         }
     }
 
-
+    // Render Component
     render(){
 
         return(

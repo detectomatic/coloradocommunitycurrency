@@ -12,16 +12,21 @@ import Demo from '~/Components/Demo';
 
 // COMPONENT
 export default class Content extends React.Component{
-  requireAuth(){
-    if (!authenticated) {
-      replace({
-        pathname: "/login",
-        state: {nextPathname: nextState.location.pathname}
-      });
+
+  // Only render these pages if the user is logged in
+  renderUserSensitivePages(){
+    if (!this.props.loggedIn) {
+      return <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} />
     }
-    next();
+    return [
+      <Route key="root" exact path={`${APP_ROOT}`} component={() => (<Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={this.props.sendMoney} readBalance={this.props.readBalance} />)}  />,
+      <Route key="transactions" path={`${APP_ROOT}transactions`} component={() => (<TransactionTable retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} />)} />,
+      <Route key="account" path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
+    ];
   }
 
+  // This component should only update when the action taken isn't a modal toggle
+  // This resolves a bug with everything reloading every time the modal is toggled.
   shouldComponentUpdate(nextProps, nextState){
     if(this.props.modalOpen !== nextProps.modalOpen){
       return false;
@@ -29,28 +34,27 @@ export default class Content extends React.Component{
     return true;
   }
   
-
+  // Render Component
   render(){
     return(
         <div className="route_wrapper">
           <NotificationContainer />
           <Switch>
-              <Route exact path={`${APP_ROOT}`} component={() => (<Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={this.props.sendMoney} readBalance={this.props.readBalance} checkLoggedIn={this.props.checkLoggedIn} />)} /> )}  />
+
+              {/* About, Contact, and Explorer are all outside of the react app, so a regular link will do */}
               <Route path={`/about`} />
               <Route path={`/contact`} />
               <Route path={`/explorer`} />
-              <Route path={`${APP_ROOT}transactions`} 
-                component={() => (
-                  this.props.loggedIn ? 
-                    <TransactionTable retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} /> 
-                  : <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} />
-                  
-                )} 
-              />
-              <Route path={`${APP_ROOT}account`} component={() => ( <Account createNotification={this.props.createNotification} email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
+
+              {/* Login */}
               <Route path={`${APP_ROOT}login`} component={() => ( <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.loggedIn} handleLogin={this.props.handleLogin} /> )} />
+              {/* Register */}
               <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
-              <Route path={`${APP_ROOT}demo`} component={() => ( <Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={ this.sendMoney } readBalance={this.props.readBalance} checkLoggedIn={this.props.checkLoggedIn} />)} />
+              
+              {/* The pages below are only accessible if the user is logged in */}
+              {/* Account, Transactions, Demo */}
+              { this.renderUserSensitivePages()}
+              
           </Switch>
         </div>
     );

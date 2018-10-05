@@ -14,14 +14,20 @@ export default class TransactionTable extends React.Component{
   constructor(){
     super();
     this.state = {
+      // All sent / received transactions as js objects for this user,
+      // Gathered from the remote ethereum node
       sent : [],
       received : [],
+      // All sent / received hashes with timestamp data as js objects 
+      // for this user, Gathered from  our PSQL DB
       sentHashes : [],
       receivedHashes : [],
-      activeButton : '',
+      // Determines whether the user is viewing 'Sent' or 'Received' Transaction data
+      sentActive : true,
     }
   }
 
+  // Copies an address to the clipboard of the user by clicking on it or the icon
   copyAddress(address){
     var dummy = document.createElement("input");
     document.body.appendChild(dummy);
@@ -33,10 +39,12 @@ export default class TransactionTable extends React.Component{
     this.props.createNotification('success', 'Address Copied');
   }
 
+  // Constructs the transaction rows based on sent / received data and returns them to be rendered
   renderTransactionRows(){
       let transactionEls;
+      
       // SENT
-      if(this.state.activeButton === 'sent'){
+      if(this.state.sentActive){
         transactionEls = this.state.sent.map((trans, i)=>{
           const val = utils.toBN(trans.value);
           return (
@@ -90,6 +98,7 @@ export default class TransactionTable extends React.Component{
             </tr>
           )
         });
+
       // RECEIVED
       }else{
         transactionEls = this.state.received.map((trans, i)=>{
@@ -146,13 +155,17 @@ export default class TransactionTable extends React.Component{
           )
         });
       }
+
       return transactionEls;
   }
 
+  // First, fetches the transaction hashes of the user from the DB,
+  // Then fetches the transaction data off the blockchain based on the hashes.
+  // Finally, sets the state with all the aquired data
   retrieveTableData(button){
-    const activeButton = this.state.activeButton;
-    if(button === 'sent' && activeButton !== 'sent'){
-      this.setState({activeButton : 'sent'});
+    // If SENT button is selected and there are no transactions yet fetched
+    if(button === 'sent' && !this.state.sent.length){
+      this.setState({sentActive : true});
       this.props.retrieveSentHashes()
       .then((data) =>{
         this.props.retrieveTransactionData(data.data)
@@ -160,8 +173,9 @@ export default class TransactionTable extends React.Component{
           this.setState(()=>({sent : transaction, sentHashes : data.data}));
         })
       });
-    }else if(button === 'received' && activeButton !== 'received'){
-      this.setState({activeButton : 'received'});
+    // If RECEIVED button is selected and there are no transactions yet fetched
+    }else if(button === 'received' && !this.state.received.length){
+      this.setState({sentActive : false});
       this.props.retrieveReceivedHashes()
       .then((data) =>{
         this.props.retrieveTransactionData(data.data)
@@ -170,18 +184,22 @@ export default class TransactionTable extends React.Component{
         })
       });
     }
+
     return;
   }
 
-
-  componentWillMount() {
+  // When Component mounts, kick off the sequence of retrieving user transaction data
+  componentDidMount() {
     this.retrieveTableData('sent');
   }
 
+  // When the Component updates, we need to reload the tooltip plugin since it doesn't
+  // work with dynamically created elements like the transaction rows
   componentDidUpdate(){
     ReactTooltip.rebuild();
   }
 
+  // Render Component
   render(){
     return(
       <div className="page-wrapper transaction-page">
@@ -192,8 +210,9 @@ export default class TransactionTable extends React.Component{
         </section>
         <section className="controls-section">
           <div className="btn-group">
-            <button className={this.state.activeButton === 'sent' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('sent')}}>Sent</button>
-            <button className={this.state.activeButton === 'received' ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('received')}}>Received</button>
+            {/* Toggle active button based on the state of the app */}
+            <button className={ this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('sent')}}>Sent</button>
+            <button className={ !this.state.sentActive ? 'btn btn-primary' : 'btn btn-secondary'} onClick={()=>{this.retrieveTableData('received')}}>Received</button>
           </div>
         </section>
         <section className="table-section">
@@ -206,10 +225,12 @@ export default class TransactionTable extends React.Component{
               </tr>
             </thead>
             <tbody>
+              {/* Dynamically render all transaction rows for user */}
               {this.renderTransactionRows()}
             </tbody>
           </table>
         </section>
+        {/* Tooltip Plugin */}
         <ReactTooltip />
       </div>
     );

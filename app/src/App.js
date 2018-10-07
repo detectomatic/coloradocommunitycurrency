@@ -15,7 +15,7 @@ import Content from '~/Components/Content';
 import Footer from '~/Components/Footer/Footer';
 import Modal from '~/Components/Modal/Modal';
 // COMMON
-import { login, logout, loggedIn } from '~/common/loginService';
+import { login, logout, loggedIn } from '~/common/userService';
 import { retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/transactionService';
 // ASSETS
 import '~/assets/scss/styles.scss';
@@ -134,7 +134,7 @@ class App extends React.Component{
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   _retrieveTransactionData(transArray){
     const promiseArray = transArray.map((p, i)=>{
-      if(i <= 5){
+      if(i < 10){
         return new Promise((resolve, reject)=>{
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){
@@ -149,8 +149,11 @@ class App extends React.Component{
 
     return Promise.all(promiseArray)
     .then((values) =>{
-      //console.log('BC data', values);
-      return values;
+      // Was receiving undefined occasionally... need to look into this later
+      // In the mean time, just don't show them
+      return values.filter((v)=>{
+        return typeof v !== 'undefined';
+      });
     });
   }
 

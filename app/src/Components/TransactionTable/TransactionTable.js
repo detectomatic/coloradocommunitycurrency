@@ -43,10 +43,10 @@ export default class TransactionTable extends React.Component{
   // Constructs the transaction rows based on sent / received data and returns them to be rendered
   _renderTransactionRows(){
       let transactionEls;
-      
       // SENT
       if(this.state.sentActive){
         transactionEls = this.state.sent.map((trans, i)=>{
+          
           const val = utils.toBN(trans.value);
           return (
             <tr key={`sent-${i}`}>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // LIBRARIES
 import PropTypes from 'prop-types';
 // COMMON
-import { register } from '~/common/loginService';
+import { register } from '~/common/userService';
 import history from '~/common/history';
 // ASSETS
 import '~/assets/scss/forms.scss';

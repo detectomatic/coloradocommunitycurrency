@@ -2,7 +2,7 @@
 import axios from 'axios';
 // Set AJAX axios endpoint to our server-side node app, 
 // whether that be on localhost or the google cloud for production
-const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/';
+const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/users/';
 
 // Login via Node backend
 const login = function(formData){
@@ -76,7 +76,7 @@ const logout = function(){
 const loggedIn = function(){
     return axios.get(`${endpoint}logged-in`, {withCredentials:true})
     .then((data) => {
-        //console.log('LI data', data);
+        console.log('LI data', data);
         return data;
     })
     .catch((error)=>{

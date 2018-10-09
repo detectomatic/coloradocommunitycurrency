@@ -7,6 +7,7 @@ import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 // COMMON
 import { formatDate, formatTime } from '~/common/formatting.js';
+import history from '~/common/history';
 // ASSETS
 import './TransactionTable.scss';
 
@@ -40,6 +41,14 @@ export default class TransactionTable extends React.Component{
     this.props.createNotification('success', 'Address Copied');
   }
 
+  _redirectToExplorer(hash, type){
+    if(type === 'transaction'){
+      window.open(`http://35.227.52.90:8000/#/transaction/${hash.hash}`, '_blank');
+    }else{
+      window.open(`http://35.227.52.90:8000/#/address/${hash}`, '_blank');
+    }
+  }
+
   // Constructs the transaction rows based on sent / received data and returns them to be rendered
   _renderTransactionRows(){
       let transactionEls;
@@ -68,13 +77,13 @@ export default class TransactionTable extends React.Component{
               </td>
               <td className="address_cell">
                 <div>
-                  <span className={`address_container address-container_${i}`} onClick={this._copyAddress.bind(this, trans.to)}>
+                  <span data-tip="View Account in the Block Explorer"  className={`address_container address-container_${i}`} onClick={this._redirectToExplorer.bind(this, trans.to, 'address')}>
                     <strong>{trans.to}</strong>
                   </span>
                 </div>
                 <div>
                 {
-                  <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._copyAddress.bind(this, this.state.sentHashes[i])}>
+                  <span data-tip="View Transaction in the Block Explorer"  className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.sentHashes[i], 'transaction')}>
                     {this.state.sentHashes[i].hash}
                   </span>
                 }
@@ -108,10 +117,10 @@ export default class TransactionTable extends React.Component{
             <tr key={`received-${i}`}>
               <td className="date_cell">
                 <div className="date_container">
-                  <strong>...</strong>
+                  <strong>{formatDate( this.state.receivedHashes[i].timestamp )}</strong>
                 </div>
                 <div className="time_container secondary_row">
-                  <span>{formatTime( this.state.sentHashes[i].timestamp )}</span>
+                  <span>{formatTime( this.state.receivedHashes[i].timestamp )}</span>
                 </div>
               </td>
               <td className="label_cell">
@@ -124,20 +133,20 @@ export default class TransactionTable extends React.Component{
               </td>
               <td className="address_cell">
                 <div>
-                  <span className={`address_container address-container_${i}`} onClick={this._copyAddress.bind(this, trans.from)}>
+                  <span data-tip="View Account in Block Explorer" className={`address_container address-container_${i}`}  onClick={this._redirectToExplorer.bind(this, trans.from, 'address')}>
                     <strong>{trans.from}</strong>
                   </span>
                 </div>
                 <div>
                   {
-                    <span className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._copyAddress.bind(this, this.state.receivedHashes[i].hash)}>
+                    <span data-tip="View Transaction in the Block Explorer" className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.receivedHashes[i].hash, 'transaction')}>
                       {this.state.receivedHashes[i].hash}
                     </span>
                   }
                 </div>
               </td>
               <td  className="copy_cell">
-                <div  data-tip="Copy Address to Clipbord">
+                <div data-tip="Copy Address to Clipbord">
                   <span className="copy_container" onClick={this._copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
                 </div>
                 <div data-tip="Copy Transaction to Clipbord">

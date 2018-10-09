@@ -69,7 +69,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Bryson Kruk** - *Initial work* - [brysonmk1984](https://github.com/brysonmk1984)
+* **Bryson Kruk**  - [brysonmk1984](https://github.com/brysonmk1984)
 
 See also the list of [contributors]https://github.com/detectomatic/coloradocommunitycurrency/graphs/contributors who participated in this project.
 

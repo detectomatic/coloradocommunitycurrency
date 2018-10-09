@@ -1,0 +1,71 @@
+div.a {
+  font-size: 15px;
+}
+
+div.b {
+  font-size: large;
+}
+
+div.c {
+  font-size: 400%;
+}
+body,h1,h2,h3,h4,h5,h6 {font-family: "Hind Siliguri", sans-serif}
+body, html {
+  height: 100%;
+  line-height: 1.8;
+}
+/* Full height image header */
+.bgimg-1 {
+  background-position: center;
+  background-size: cover;
+  background-image: url("../images/market.jpg");
+  min-height: 100%;
+}
+#myNavbar.w3-bar{
+  background-color: #002868;
+  color: #fff;
+}
+.w3-bar .w3-button {
+  padding: 0px 16px;
+  font-size: 1rem;
+  line-height: 65px;
+  background-color: #002868;
+}
+.w3-bar .w3-button:hover{
+  background-color: #fff !important;
+  color: #002868;
+}
+.w3-bar .w3-button.logo:hover{
+  background-color: #002868 !important;
+}
+.w3-bar .w3-button.logo img{
+  width : 172px;
+}
+.w3-jumbo{
+  line-height:1rem;
+  font-size: 80px !important;
+}
+.subtitle{
+  font-family: 'Alex Brush';
+  font-size: 1.8rem;
+}
+.w3-button{
+  background-color: #BF0A30;
+  color: #fff !important;
+}
+.w3-button i{
+  color: #fff;
+}
+.w3-button:hover, .w3-button:hover i{
+  color: #002868 !important;
+}
+.fa{
+  color: #002868;
+}
+
+footer{
+  background-color: #294368;
+}
+footer, .footer_title a{
+  color: #a3a3ca;
+}

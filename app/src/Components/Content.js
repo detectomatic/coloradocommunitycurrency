@@ -9,7 +9,6 @@ import TransactionTable from '~/Components/TransactionTable/TransactionTable';
 import Account from '~/Components/Account/Account';
 import Login from '~/Components/Login/Login';
 import Register from '~/Components/Register/Register';
-import Demo from '~/Components/Demo';
 
 // COMPONENT
 export default class Content extends React.Component{
@@ -20,8 +19,8 @@ export default class Content extends React.Component{
       return <Login modifyAppState={this.props.modifyAppState} loggedIn={this.props.state.loggedIn} handleLogin={this.props.handleLogin} />
     }
     return [
-      <Route key="root" exact path={`${APP_ROOT}`} component={() => (<Demo retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} sendMoney={this.props.sendMoney} readBalance={this.props.readBalance} />)}  />,
-      <Route key="transactions" path={`${APP_ROOT}transactions`} component={() => (<TransactionTable retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} />)} />,
+      <Route key="root" exact path={`/`} component={() => (<TransactionTable readBalance={this.props.readBalance} retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} />)} />,
+      <Route key="transactions" path={`${APP_ROOT}transactions`} component={() => (<TransactionTable readBalance={this.props.readBalance} retrieveTransactionData={this.props.retrieveTransactionData} retrieveReceivedHashes={this.props.retrieveReceivedHashes} retrieveSentHashes={this.props.retrieveSentHashes} createNotification={this.props.createNotification} />)} />,
       <Route key="account" path={`${APP_ROOT}account`} component={() => ( <Account email={this.props.state.email} publicEthKey={this.props.state.publicEthKey} /> )} />
     ];
   }
@@ -53,7 +52,7 @@ export default class Content extends React.Component{
               <Route path={`${APP_ROOT}register`} component={() => ( <Register modifyAppState={this.props.modifyAppState} /> )} />
               
               {/* The pages below are only accessible if the user is logged in */}
-              {/* Account, Transactions, Demo */}
+              {/* Account, Transactions */}
               { this._renderUserSensitivePages()}
               
           </Switch>
@@ -67,6 +66,7 @@ Content.propTypes = {
   createNotification : PropTypes.func.isRequired,
   handleLogin : PropTypes.func.isRequired,
   modifyAppState : PropTypes.func.isRequired,
+  readBalance : PropTypes.func.isRequired,
   retrieveTransactionData : PropTypes.func.isRequired,
   retrieveSentHashes : PropTypes.func.isRequired,
   retrieveReceivedHashes : PropTypes.func.isRequired,

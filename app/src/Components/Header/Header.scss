@@ -83,6 +83,7 @@ header{
             top:54px;
             background-color: $footer_background;
             box-shadow: 0px 2px 4px gray;
+            z-index:1000;
             &.dropdown_closed{
                 display:none;
             }

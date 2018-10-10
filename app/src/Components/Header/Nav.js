@@ -67,7 +67,7 @@ export default class Nav extends React.Component{
             <a className="nav-link" href="/contact">Contact</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/explorer">Explorer</a>
+            <a className="nav-link" href="/explorer">Block Explorer</a>
           </li>
           <li className="nav-item">
             <NavLink to={`${APP_ROOT}transactions`} className="nav-link" activeClassName="active">Transactions</NavLink>

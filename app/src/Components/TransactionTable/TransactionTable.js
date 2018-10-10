@@ -2,12 +2,11 @@
 import React from 'react';
 // LIBRARIES
 import PropTypes from 'prop-types';
-import { utils, providers } from 'web3';
+import { utils } from 'web3';
 import ReactTooltip from 'react-tooltip';
 import { MdContentCopy } from 'react-icons/md';
 // COMMON
 import { formatDate, formatTime } from '~/common/formatting.js';
-import history from '~/common/history';
 // ASSETS
 import './TransactionTable.scss';
 
@@ -16,6 +15,7 @@ export default class TransactionTable extends React.Component{
   constructor(){
     super();
     this.state = {
+      balance : null,
       // All sent / received transactions as js objects for this user,
       // Gathered from the remote ethereum node
       sent : [],
@@ -47,6 +47,21 @@ export default class TransactionTable extends React.Component{
     }else{
       window.open(`http://35.227.52.90:8000/#/address/${hash}`, '_blank');
     }
+  }
+
+  // Construct the balance info box
+  _renderBalance(){
+    if(this.state.balance){console.log(parseFloat(this.state.balance).toLocaleString('en'));
+      return(
+        <section className="balance_section">
+          <span className="balance_label">Account Balance:</span>
+          <strong className="balance_value">
+            { parseFloat(this.state.balance).toLocaleString('en', { style: 'currency', currency: 'USD' })   }
+          </strong>
+        </section>
+      )
+    }
+    return;
   }
 
   // Constructs the transaction rows based on sent / received data and returns them to be rendered
@@ -207,6 +222,10 @@ export default class TransactionTable extends React.Component{
   // When Component mounts, kick off the sequence of retrieving user transaction data
   componentDidMount() {
     this._retrieveTableData('sent');
+    this.props.readBalance()
+    .then((balance)=>{
+      this.setState({balance});
+    });
   }
 
   // When the Component updates, we need to reload the tooltip plugin since it doesn't
@@ -219,6 +238,7 @@ export default class TransactionTable extends React.Component{
   render(){
     return(
       <div className="page-wrapper transaction-page">
+        { this._renderBalance() }
         <section className="title-section">
             <div className="subsection">
                 <h1>Latest Transactions</h1>
@@ -256,6 +276,7 @@ export default class TransactionTable extends React.Component{
 //PROP-TYPES
 TransactionTable.propTypes = {
   createNotification : PropTypes.func.isRequired,
+  readBalance : PropTypes.func.isRequired,
   retrieveReceivedHashes : PropTypes.func.isRequired,
   retrieveSentHashes : PropTypes.func.isRequired,
   retrieveTransactionData : PropTypes.func.isRequired

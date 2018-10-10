@@ -2,7 +2,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 // LIBRARIES
-import { utils, providers } from 'web3';
+import { utils } from 'web3';
 import { NotificationManager } from 'react-notifications';
 import history from '~/common/history';
 import { withCookies } from 'react-cookie';
@@ -63,20 +63,17 @@ class App extends React.Component{
   }
 
   // Read the balance of an account
-  // _readBalance(){
-  //   web3.eth.getBalance("0x895b758229aff6c0f95146a676bbf579ad7636aa", (error, wei)=>{
-  //     if (!error) {
-        
-  //       var balance = utils.fromWei(wei.plus(21).toString(10), 'ether');
-  //       console.log('wei', wei.toString(), 'ether',utils.fromWei(wei.toString(), 'ether'));
-  //       this.setState(()=>({balance}));
-  //   }
-
-  //   });
-  //   web3.eth.getTransaction('0x2de1d12d0785196767d90043635fc5c1e2c6d276e604b2dc5ef217a6fd8d7cdb', (error, data) =>{
-  //     console.log('D',data);
-  //   });
-  // }
+  _readBalance(){
+    return new Promise((resolve, reject)=>{
+      web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
+        if (!error) {
+          const weiBalance = utils.toBN(wei);
+          const ethBalance = utils.fromWei(weiBalance, 'ether');
+          resolve(ethBalance);
+        }else{reject('Error retrieving Balance data');}
+      });
+    })
+  }
   
   // Send DCoin to a specific user
   _sendMoney(to, value){
@@ -238,6 +235,7 @@ class App extends React.Component{
           createNotification={this._createNotification.bind(this)} 
           handleLogin={this._handleLogin.bind(this)} 
           modifyAppState={this._modifyAppState.bind(this)} 
+          readBalance={ this._readBalance.bind(this) }
           retrieveTransactionData={ this._retrieveTransactionData.bind(this) } 
           retrieveSentHashes={ this._retrieveSentHashes.bind(this) } 
           retrieveReceivedHashes={ this._retrieveReceivedHashes.bind(this) } 

@@ -61,10 +61,10 @@ export default class Nav extends React.Component{
       <nav className="nav-wrapper" onMouseLeave={()=>{this.setState({open : false})}}>
         <ul className="nav">
           <li className="nav-item">
-            <a className="nav-link" href="/about">About</a>
+            <a className="nav-link" href="/#about">About</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/contact">Contact</a>
+            <a className="nav-link" href="/#contact">Contact</a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/explorer">Block Explorer</a>

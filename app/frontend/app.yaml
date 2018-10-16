@@ -5,11 +5,11 @@ threadsafe: true
 handlers:
 - url: /
   static_files: www/index.html
-  upload: www/index.html
+  upload: assets/(.*)
 
 - url: /(.*)
   static_files: www/\1
-  upload: www/(.*)
+  upload: assets/(.*)
 
 # handlers:
 # - url: /(.*\.(js|css|png|gif|jpg|svg|ttf|ico|json))$

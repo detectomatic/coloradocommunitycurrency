@@ -1,7 +1,7 @@
 // LIBRARIES
 import axios from 'axios';
 
-const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/transactions/';
+const endpoint = process.env.NODE_ENV === 'production' ?  'https://betaapi-dot-dcoin-web-app.appspot.com/' : 'http://localhost:3001/transactions/';
 
 // Get transactions from DB based on sender address
 const retrieveSentHashes = function(address){console.log('sent ad',address);

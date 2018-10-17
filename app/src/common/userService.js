@@ -2,7 +2,7 @@
 import axios from 'axios';
 // Set AJAX axios endpoint to our server-side node app, 
 // whether that be on localhost or the google cloud for production
-const endpoint = process.env.NODE_ENV === 'production' ?  'https://SOMEGOOGLEADDRESS' : 'http://localhost:3001/users/';
+const endpoint = process.env.NODE_ENV === 'production' ?  'https://betaapi-dot-dcoin-web-app.appspot.com/' : 'http://localhost:3001/users/';
 
 // Login via Node backend
 const login = function(formData){

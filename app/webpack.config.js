@@ -5,9 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const   plugins = [
   new HtmlWebpackPlugin({filename:'index.html', template: 'index.html'}),
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.DefinePlugin({APP_ROOT : "'/'"})
+  new webpack.DefinePlugin({APP_ROOT : "'/'"}),
+  new webpack.DefinePlugin({API_ENDPOINT : JSON.stringify(process.env.NODE_ENV) === 'production' ? "'https://betaapi-dot-dcoin-web-app.appspot.com/'" : "'http://localhost:3001/transactions/'"})
 ];
-
+console.log('plugins - ', plugins);
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: [

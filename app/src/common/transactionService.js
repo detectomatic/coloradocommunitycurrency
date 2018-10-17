@@ -1,7 +1,7 @@
 // LIBRARIES
 import axios from 'axios';
 
-const endpoint = API_ENDPOINT;
+const endpoint = `${API_ENDPOINT}transactions/`;
 
 // Get transactions from DB based on sender address
 const retrieveSentHashes = function(address){console.log('sent ad',address);

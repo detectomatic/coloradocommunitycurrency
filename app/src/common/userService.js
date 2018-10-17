@@ -2,7 +2,7 @@
 import axios from 'axios';
 // Set AJAX axios endpoint to our server-side node app, 
 // whether that be on localhost or the google cloud for production
-const endpoint = API_ENDPOINT;
+const endpoint = `${API_ENDPOINT}users/`;
 console.log('ENDPOINT!', endpoint);
 // Login via Node backend
 const login = function(formData){

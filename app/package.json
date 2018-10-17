@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "build:dev": "webpack --env development",
-    "build:prod": "webpack --env production",
+    "build:dev": "cross-env NODE_ENV=development webpack --env development",
+    "build:prod": "cross-env NODE_ENV=production webpack --env production",
     "dev": "webpack-dev-server --inline --env development --host 0.0.0.0",
     "dev:hot": "webpack-dev-server --inline --hot --env development"
   },
@@ -33,6 +33,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "eslint": "^5.5.0",
     "file-loader": "^1.1.11",

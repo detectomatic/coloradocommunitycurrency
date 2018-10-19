@@ -216,13 +216,14 @@ class App extends React.Component{
   // If logged in, set state to the user's data
   componentWillMount(){ 
     const cookie = this.props.cookies.get('sid');
-    if(cookie !== undefined) {
+    //if(cookie !== undefined) {
       loggedIn()
       .then((data) =>{
+        console.log('DATA', data);
         this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
         this._initWeb3();
       })
-    } 
+    //} 
   }
 
   // Render APP Component

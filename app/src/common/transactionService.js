@@ -1,6 +1,6 @@
 // LIBRARIES
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 const endpoint = `${API_ENDPOINT}transactions/`;
 
 // Get transactions from DB based on sender address

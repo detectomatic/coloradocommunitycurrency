@@ -1,6 +1,6 @@
 // LIBRARIES
 import axios from 'axios';
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 // Set AJAX axios endpoint to our server-side node app, 
 // whether that be on localhost or the google cloud for production
 const endpoint = `${API_ENDPOINT}users/`;

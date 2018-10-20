@@ -24,6 +24,7 @@ const login = function(formData){
             return {type : 'Server Error', message : `There was a server error with a status code of ${data.status}`}
         }
     }).catch((error) => {
+        console.log('login error', error);
         return { error : [{type : 'AJAX Error', message : `Email or password did not match our records!`}] }
     })
 };

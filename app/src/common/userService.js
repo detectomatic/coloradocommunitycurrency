@@ -74,7 +74,7 @@ const logout = function(){
 
 // Check if user is logged in
 const loggedIn = function(){
-    return axios.get(`${endpoint}logged-in`)
+    return axios.get(`${endpoint}logged-in`, {withCredentials:true})
     .then((data) => {
         console.log('LI data', data);
         return data;

@@ -1,12 +1,13 @@
 // LIBRARIES
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 // Set AJAX axios endpoint to our server-side node app, 
 // whether that be on localhost or the google cloud for production
 const endpoint = `${API_ENDPOINT}users/`;
 console.log('ENDPOINT!', endpoint);
 // Login via Node backend
 const login = function(formData){
-    return axios.post(`${endpoint}login`,{email: formData.email, password: formData.password}, {withCredentials:true})
+    return axios.post(`${endpoint}login`,{email: formData.email, password: formData.password})
     .then((data) => {console.log('data', data);
         if(data.status === 200){
             console.log('LI',data);
@@ -51,7 +52,7 @@ const register = function(formData){
 
 // Logout via Node backend
 const logout = function(){
-    return axios.get(`${endpoint}logout`, {withCredentials:true})
+    return axios.get(`${endpoint}logout`)
     .then((data) => {console.log('in lo');
         if(data.status === 200){
             //console.log(data,'cookie-', getCookie('brysonsession'));
@@ -74,7 +75,7 @@ const logout = function(){
 
 // Check if user is logged in
 const loggedIn = function(){
-    return axios.get(`${endpoint}logged-in`, {withCredentials:true})
+    return axios.get(`${endpoint}logged-in`)
     .then((data) => {
         console.log('LI data', data);
         return data;

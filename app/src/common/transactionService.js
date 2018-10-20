@@ -1,11 +1,11 @@
 // LIBRARIES
 import axios from 'axios';
-
+axios.defaults.withCredentials = true;
 const endpoint = `${API_ENDPOINT}transactions/`;
 
 // Get transactions from DB based on sender address
 const retrieveSentHashes = function(address){console.log('sent ad',address);
-    return axios.post(`${endpoint}retrieve-sent-hashes`, { address }, {withCredentials:true})
+    return axios.post(`${endpoint}retrieve-sent-hashes`, { address })
     .then((data) => {
         console.log('SENT TRANSACTIONS:', data);
         return data;
@@ -18,7 +18,7 @@ const retrieveSentHashes = function(address){console.log('sent ad',address);
 // Get transactions from DB based on receiver address
 const retrieveReceivedHashes = function(address){
     console.log('address', address);
-    return axios.post(`${endpoint}retrieve-received-hashes`, { address }, {withCredentials:true})
+    return axios.post(`${endpoint}retrieve-received-hashes`, { address })
     .then((data) => {
         console.log('RECEIVED TRANSACTIONS:', data);
         return data;
@@ -30,7 +30,7 @@ const retrieveReceivedHashes = function(address){
 
 // Save new transaction hash to DB
 const saveNewHash = function(from, to, hash){
-    return axios.post(`${endpoint}save-new-hash`, { from, to, hash }, { withCredentials:true })
+    return axios.post(`${endpoint}save-new-hash`, { from, to, hash })
     .then((data) => {
         console.log('Saved this data:', data);
         return data;

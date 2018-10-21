@@ -215,15 +215,18 @@ class App extends React.Component{
   // checking for a  client cookie and checking with node backend.
   // If logged in, set state to the user's data
   componentWillMount(){ 
-    const cookie = this.props.cookies.get('sid');
-    //if(cookie !== undefined) {
+    const cookieName = APP_DEV ? 'sid' : '1P_JAR';
+    const cookie = this.props.cookies.get(cookieName);
+    if(cookie !== undefined) {
       loggedIn()
       .then((data) =>{
         console.log('DATA', data);
-        this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
-        this._initWeb3();
+        if(data){
+          this.setState({loggedIn : true, publicEthKey : data.data.publicEthKey, email : data.data.email });
+          this._initWeb3();
+        }
       })
-    //} 
+    } 
   }
 
   // Render APP Component

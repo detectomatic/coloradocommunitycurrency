@@ -215,8 +215,8 @@ class App extends React.Component{
   // checking for a  client cookie and checking with node backend.
   // If logged in, set state to the user's data
   componentWillMount(){ 
-    const cookieName = APP_DEV ? 'sid' : '1P_JAR';
-    const cookie = this.props.cookies.get(cookieName);
+    //const cookieName = APP_DEV === 'development' ? 'sid' : '1P_JAR';
+    const cookie = this.props.cookies.get('sid');
     if(cookie !== undefined) {
       loggedIn()
       .then((data) =>{

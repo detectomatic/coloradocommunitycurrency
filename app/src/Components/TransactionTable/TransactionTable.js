@@ -224,6 +224,7 @@ export default class TransactionTable extends React.Component{
     this._retrieveTableData('sent');
     this.props.readBalance()
     .then((balance)=>{
+      console.log('balance', balance);
       this.setState({balance});
     });
   }

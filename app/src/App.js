@@ -65,6 +65,7 @@ class App extends React.Component{
   // Read the balance of an account
   _readBalance(){
     return new Promise((resolve, reject)=>{
+      console.log('eth key', this.state.publicEthKey);
       web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
         if (!error) {
           const weiBalance = utils.toBN(wei);
@@ -130,7 +131,9 @@ class App extends React.Component{
 
   // WEB3 Call to get transaction data of supplied hashes from blockchain
   _retrieveTransactionData(transArray){
+    console.log('TD', transArray);
     const promiseArray = transArray.map((p, i)=>{
+        console.log(i);
       if(i < 10){
         return new Promise((resolve, reject)=>{
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{

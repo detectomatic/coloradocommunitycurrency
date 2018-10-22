@@ -138,6 +138,7 @@ class App extends React.Component{
               console.log('ERR', err);
               reject(err);
             }
+            console.log('TRANS DATA', data);
             resolve(data);
           });
         });

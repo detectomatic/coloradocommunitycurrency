@@ -76,13 +76,16 @@ const logout = function(){
 
 // Check if user is logged in
 const loggedIn = function(){
-    return axios.get(`${endpoint}logged-in`, {withCredentials:true})
-    .then((data) => {
-        console.log('LI data', data);
-        return data;
-    })
-    .catch((error)=>{
-        console.log('li error', error);
+    return new Promise((resolve, reject) =>{
+        return axios.get(`${endpoint}logged-in`, {withCredentials:true})
+        .then((data) => {
+            console.log('LI data', data);
+            resolve(data);
+        })
+        .catch((error)=>{
+            console.log('li error', error);
+            reject(error);
+        });
     });
 };
 

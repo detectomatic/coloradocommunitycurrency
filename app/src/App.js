@@ -214,7 +214,7 @@ class App extends React.Component{
   // When Component mounts, check if user is already logged in by 
   // checking for a  client cookie and checking with node backend.
   // If logged in, set state to the user's data
-  componentWillMount(){ 
+  componentWillMount(){ console.log('CWM');
     //const cookieName = APP_MODE === 'development' ? 'sid' : '1P_JAR';
     // const cookie = this.props.cookies.get('sid');
     // if(cookie !== undefined) {

@@ -66,7 +66,7 @@ class App extends React.Component{
   _readBalance(){
     return new Promise((resolve, reject)=>{
       console.log('eth key', this.state.publicEthKey);
-      web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
+      web3.eth.getBalance("0x895B758229aFF6C0f95146A676bBF579aD7636aa".toLowerCase(), (error, wei)=>{
         if (!error) {console.log('bal');
           const weiBalance = utils.toBN(wei);
           const ethBalance = utils.fromWei(weiBalance, 'ether');

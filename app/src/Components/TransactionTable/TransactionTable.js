@@ -226,7 +226,10 @@ export default class TransactionTable extends React.Component{
     .then((balance)=>{
       console.log('balance', balance);
       this.setState({balance});
-    });
+    })
+    .catch((err)=>{
+      console.log('ERROR IN BAL', err);
+    })
   }
 
   // When the Component updates, we need to reload the tooltip plugin since it doesn't

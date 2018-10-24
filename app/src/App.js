@@ -67,11 +67,13 @@ class App extends React.Component{
     return new Promise((resolve, reject)=>{
       console.log('eth key', this.state.publicEthKey);
       web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
-        if (!error) {
+        if (!error) {console.log('bal');
           const weiBalance = utils.toBN(wei);
           const ethBalance = utils.fromWei(weiBalance, 'ether');
           resolve(ethBalance);
-        }else{reject('Error retrieving Balance data');}
+        }else{console.log('Error retrieving Balance data',error);
+          reject(error);
+        }
       });
     })
   }
@@ -134,8 +136,9 @@ class App extends React.Component{
     console.log('TD', transArray);
     const promiseArray = transArray.map((p, i)=>{
         console.log(i);
-      if(i < 10){
+      if(i < 10){console.log('did this work?');
         return new Promise((resolve, reject)=>{
+          console.log('test',web3.eth);
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){
               console.log('ERR', err);

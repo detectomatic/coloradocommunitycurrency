@@ -1,9 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const   plugins = [
   new HtmlWebpackPlugin({filename:'index.html', template: 'index.html'}),
+  new CopyWebpackPlugin([ {from: 'app.yaml', to: 'app.yaml'} ]),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.DefinePlugin({APP_ROOT : "'/'"}),
   //new webpack.DefinePlugin({APP_MODE : process.env.NODE_ENV !== 'production' ? "'development'" : "'production'"}),

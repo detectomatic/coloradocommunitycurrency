@@ -19,6 +19,7 @@ import { login, logout, loggedIn } from '~/common/userService';
 import { retrieveSentHashes, retrieveReceivedHashes, saveNewHash } from '~/common/transactionService';
 // ASSETS
 import '~/assets/scss/styles.scss';
+import '~/assets/images/favicon.ico';
 
 class App extends React.Component{
   constructor(){
@@ -137,7 +138,6 @@ class App extends React.Component{
     console.log('TD', transArray);
     const promiseArray = transArray.map((p, i)=>{
       if(i < 10){
-        //console.log('did this work?');
         return new Promise((resolve, reject)=>{
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){

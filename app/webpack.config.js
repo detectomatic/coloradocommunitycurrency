@@ -25,7 +25,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'frontend'),
     publicPath : '/',
-    filename: 'bundle.js',
+    filename: 'assets/js/bundle.js',
   },
   devServer: {
     historyApiFallback: true,

@@ -6,8 +6,13 @@ const   plugins = [
   new HtmlWebpackPlugin({filename:'index.html', template: 'index.html'}),
   new webpack.HotModuleReplacementPlugin(),
   new webpack.DefinePlugin({APP_ROOT : "'/'"}),
-  new webpack.DefinePlugin({APP_MODE : process.env.NODE_ENV !== 'production' ? "'development'" : "'production'"}),
-  new webpack.DefinePlugin({API_ENDPOINT : process.env.NODE_ENV === 'production' ? "'https://betaapi-dot-dcoin-web-app.appspot.com/'" : "'http://localhost:3001/'"})
+  //new webpack.DefinePlugin({APP_MODE : process.env.NODE_ENV !== 'production' ? "'development'" : "'production'"}),
+  new webpack.DefinePlugin({API_ENDPOINT : process.env.NODE_ENV === 'production' ? "'https://betaapi-dot-dcoin-web-app.appspot.com/'" : "'http://localhost:3001/'"}),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: '\'' + process.env.NODE_ENV + '\'',
+    },
+  }),
 ];
 
 module.exports = {
@@ -16,7 +21,7 @@ module.exports = {
     './index.js',
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'frontend'),
     publicPath : '/',
     filename: 'bundle.js',
   },
@@ -50,7 +55,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|gif|jpg)$/,
+        test: /\.(png|gif|jpg|ico)$/,
         exclude: /node_modules/,
         use : ['file-loader?name=[name].[ext]&outputPath=assets/images/'],
         include: path.join(__dirname, 'src')
@@ -63,7 +68,7 @@ module.exports = {
       },
       { 
         test: /.(ttf|eot|svg|woff(2)?)(\S+)?$/,
-        loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
+        loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]&outputPath=assets/fonts/'
       },
     ],
   },
@@ -73,5 +78,5 @@ module.exports = {
         '~' : path.resolve( __dirname, 'src' )
     },
   },
-  mode: 'development'
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
 };

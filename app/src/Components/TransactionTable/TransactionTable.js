@@ -67,117 +67,125 @@ export default class TransactionTable extends React.Component{
   // Constructs the transaction rows based on sent / received data and returns them to be rendered
   _renderTransactionRows(){
       let transactionEls;
+      console.log('asd',this.state.sent);
       // SENT
       if(this.state.sentActive){
         transactionEls = this.state.sent.map((trans, i)=>{
           
-          const val = utils.toBN(trans.value);
-          return (
-            <tr key={`sent-${i}`}>
-              <td className="date_cell">
-                <div className="date_container">
-                  <strong>{formatDate( this.state.sentHashes[i].timestamp )}</strong>
-                </div>
-                <div className="time_container secondary_row">
-                  <span>{formatTime( this.state.sentHashes[i].timestamp )}</span>
-                </div>
-              </td>
-              <td className="label_cell">
-                <div className="sent_to_label_container">
-                  <strong>SENT TO:</strong>
-                </div> 
-                <div className="transaction_label_container secondary_row">
-                  <span>Transaction: </span>
-                </div> 
-              </td>
-              <td className="address_cell">
-                <div>
-                  <span data-tip="View Account in the Block Explorer"  className={`address_container address-container_${i}`} onClick={this._redirectToExplorer.bind(this, trans.to, 'address')}>
-                    <strong>{trans.to}</strong>
-                  </span>
-                </div>
-                <div>
-                {
-                  <span data-tip="View Transaction in the Block Explorer"  className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.sentHashes[i], 'transaction')}>
-                    {this.state.sentHashes[i].hash}
-                  </span>
-                }
-                </div>
-              </td>
-              <td  className="copy_cell">
-                <div  data-tip="Copy Address to Clipbord">
-                  <span className="copy_container" onClick={this._copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
-                </div>
-                <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.sentHashes[i].hash)}><MdContentCopy /></span>
-                </div>
-              </td>
-              <td  className="amount_cell">
-                <div>
-                  <strong className="amount_container">
-                    
-                    $ { utils.fromWei(val, 'ether') }
-                  </strong>
-                </div>
-              </td>
-            </tr>
-          )
+          if(trans){
+            const val = utils.toBN(trans.value);
+            console.log('TRA', trans);
+            return (
+              <tr key={`sent-${i}`}>
+                <td className="date_cell">
+                  <div className="date_container">
+                    <strong>{formatDate( this.state.sentHashes[i].timestamp )}</strong>
+                  </div>
+                  <div className="time_container secondary_row">
+                    <span>{formatTime( this.state.sentHashes[i].timestamp )}</span>
+                  </div>
+                </td>
+                <td className="label_cell">
+                  <div className="sent_to_label_container">
+                    <strong>SENT TO:</strong>
+                  </div> 
+                  <div className="transaction_label_container secondary_row">
+                    <span>Transaction: </span>
+                  </div> 
+                </td>
+                <td className="address_cell">
+                  <div>
+                    <span data-tip="View Account in the Block Explorer"  className={`address_container address-container_${i}`} onClick={this._redirectToExplorer.bind(this, trans.to, 'address')}>
+                      <strong>{trans.to}</strong>
+                    </span>
+                  </div>
+                  <div>
+                  {
+                    <span data-tip="View Transaction in the Block Explorer"  className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.sentHashes[i], 'transaction')}>
+                      {this.state.sentHashes[i].hash}
+                    </span>
+                  }
+                  </div>
+                </td>
+                <td  className="copy_cell">
+                  <div  data-tip="Copy Address to Clipbord">
+                    <span className="copy_container" onClick={this._copyAddress.bind(this, trans.to)}><MdContentCopy /></span>
+                  </div>
+                  <div data-tip="Copy Transaction to Clipbord">
+                    <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.sentHashes[i].hash)}><MdContentCopy /></span>
+                  </div>
+                </td>
+                <td  className="amount_cell">
+                  <div>
+                    <strong className="amount_container">
+                      
+                      $ { utils.fromWei(val, 'ether') }
+                    </strong>
+                  </div>
+                </td>
+              </tr>
+            )
+          }
+          
         });
 
       // RECEIVED
       }else{
         transactionEls = this.state.received.map((trans, i)=>{
-          const val = utils.toBN(trans.value);
-          return (
-            <tr key={`received-${i}`}>
-              <td className="date_cell">
-                <div className="date_container">
-                  <strong>{formatDate( this.state.receivedHashes[i].timestamp )}</strong>
-                </div>
-                <div className="time_container secondary_row">
-                  <span>{formatTime( this.state.receivedHashes[i].timestamp )}</span>
-                </div>
-              </td>
-              <td className="label_cell">
-                <div className="sent_to_label_container">
-                  <strong>SENDER:</strong>
-                </div> 
-                <div className="transaction_label_container secondary_row">
-                  <span>Transaction: </span>
-                </div> 
-              </td>
-              <td className="address_cell">
-                <div>
-                  <span data-tip="View Account in Block Explorer" className={`address_container address-container_${i}`}  onClick={this._redirectToExplorer.bind(this, trans.from, 'address')}>
-                    <strong>{trans.from}</strong>
-                  </span>
-                </div>
-                <div>
-                  {
-                    <span data-tip="View Transaction in the Block Explorer" className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.receivedHashes[i].hash, 'transaction')}>
-                      {this.state.receivedHashes[i].hash}
+          
+          if(trans){
+            const val = utils.toBN(trans.value);
+            return (
+              <tr key={`received-${i}`}>
+                <td className="date_cell">
+                  <div className="date_container">
+                    <strong>{formatDate( this.state.receivedHashes[i].timestamp )}</strong>
+                  </div>
+                  <div className="time_container secondary_row">
+                    <span>{formatTime( this.state.receivedHashes[i].timestamp )}</span>
+                  </div>
+                </td>
+                <td className="label_cell">
+                  <div className="sent_to_label_container">
+                    <strong>SENDER:</strong>
+                  </div> 
+                  <div className="transaction_label_container secondary_row">
+                    <span>Transaction: </span>
+                  </div> 
+                </td>
+                <td className="address_cell">
+                  <div>
+                    <span data-tip="View Account in Block Explorer" className={`address_container address-container_${i}`}  onClick={this._redirectToExplorer.bind(this, trans.from, 'address')}>
+                      <strong>{trans.from}</strong>
                     </span>
-                  }
-                </div>
-              </td>
-              <td  className="copy_cell">
-                <div data-tip="Copy Address to Clipbord">
-                  <span className="copy_container" onClick={this._copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
-                </div>
-                <div data-tip="Copy Transaction to Clipbord">
-                  <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.receivedHashes[i].hash)}><MdContentCopy /></span>
-                </div>
-              </td>
-              <td  className="amount_cell">
-                <div>
-                  <strong className="amount_container">
-                    
-                    $ { utils.fromWei(val, 'ether') }
-                  </strong>
-                </div>
-              </td>
-            </tr>
-          )
+                  </div>
+                  <div>
+                    {
+                      <span data-tip="View Transaction in the Block Explorer" className={`transaction_container transaction-container_${i} secondary_row`} onClick={this._redirectToExplorer.bind(this, this.state.receivedHashes[i].hash, 'transaction')}>
+                        {this.state.receivedHashes[i].hash}
+                      </span>
+                    }
+                  </div>
+                </td>
+                <td  className="copy_cell">
+                  <div data-tip="Copy Address to Clipbord">
+                    <span className="copy_container" onClick={this._copyAddress.bind(this, trans.from)}><MdContentCopy /></span>
+                  </div>
+                  <div data-tip="Copy Transaction to Clipbord">
+                    <span className="copy_container" onClick={this._copyAddress.bind(this, this.state.receivedHashes[i].hash)}><MdContentCopy /></span>
+                  </div>
+                </td>
+                <td  className="amount_cell">
+                  <div>
+                    <strong className="amount_container">
+                      
+                      $ { utils.fromWei(val, 'ether') }
+                    </strong>
+                  </div>
+                </td>
+              </tr>
+            )
+          }
         });
       }
 

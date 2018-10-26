@@ -53,8 +53,9 @@ class App extends React.Component{
     // Use web3 from node_modules
     // set provider to remote RPC
     }else{
-      this.web3Provider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
-      console.log('USING REMOTE RPC');
+      web3.currentProvider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
+      this.web3Provider;
+      console.log('USING REMOTE RPC', web3);
     }
 
     //this.web3 = new Web3(this.web3Provider);
@@ -65,8 +66,8 @@ class App extends React.Component{
   // Read the balance of an account
   _readBalance(){
     return new Promise((resolve, reject)=>{
-      console.log('eth key', this.state.publicEthKey);
-      web3.eth.getBalance("0x895B758229aFF6C0f95146A676bBF579aD7636aa".toLowerCase(), (error, wei)=>{
+      console.log('eth key', this.state.publicEthKey, "0x895B758229aFF6C0f95146A676bBF579aD7636aa".toLowerCase());
+      web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
         if (!error) {console.log('bal');
           const weiBalance = utils.toBN(wei);
           const ethBalance = utils.fromWei(weiBalance, 'ether');
@@ -135,16 +136,15 @@ class App extends React.Component{
   _retrieveTransactionData(transArray){
     console.log('TD', transArray);
     const promiseArray = transArray.map((p, i)=>{
-        console.log(i);
-      if(i < 10){console.log('did this work?');
+      if(i < 10){
+        //console.log('did this work?');
         return new Promise((resolve, reject)=>{
-          console.log('test',web3.eth);
           web3.eth.getTransaction(transArray[i].hash, (err, data) =>{
             if(err){
               console.log('ERR', err);
               reject(err);
             }
-            console.log('TRANS DATA', data);
+            //console.log('TRANS DATA', data);
             resolve(data);
           });
         });
@@ -222,7 +222,7 @@ class App extends React.Component{
   // checking for a  client cookie and checking with node backend.
   // If logged in, set state to the user's data
   componentWillMount(){ console.log('CWM');
-    //const cookieName = APP_MODE === 'development' ? 'sid' : '1P_JAR';
+    //const cookieName = NODE_ENV === 'development' ? 'sid' : '1P_JAR';
     // const cookie = this.props.cookies.get('sid');
     // if(cookie !== undefined) {
       loggedIn()

@@ -48,14 +48,14 @@ class App extends React.Component{
   _initWeb3(){
     // Check if Web 3 has been injected by the browser
     // Use Browser/metamask version
-    if(typeof web3 !== 'undefined'){
+    if(typeof web3 == 'undefined'){
       this.web3Provider = web3.currentProvider;
       console.log('USING METAMASK', this.web3Provider);
     // Use web3 from node_modules
     // set provider to remote RPC
     }else{
-      web3.currentProvider = new Web3.providers.HttpProvider('http://35.237.222.172:8111');
-      this.web3Provider;
+      this.web3Provider =  new Web3.providers.HttpProvider('http://35.237.222.172:8111');
+      
       console.log('USING REMOTE RPC', web3);
     }
 
@@ -67,8 +67,10 @@ class App extends React.Component{
   // Read the balance of an account
   _readBalance(){
     return new Promise((resolve, reject)=>{
-      console.log('eth key', this.state.publicEthKey, "0x895B758229aFF6C0f95146A676bBF579aD7636aa".toLowerCase());
+      console.log('eth key', this.state.publicEthKey);
+      console.log(web3.isAddress(this.state.publicEthKey) );
       web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
+        console.log('inside callback for getBalance, before conditional');
         if (!error) {console.log('bal');
           const weiBalance = utils.toBN(wei);
           const ethBalance = utils.fromWei(weiBalance, 'ether');

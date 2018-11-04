@@ -48,16 +48,16 @@ class App extends React.Component{
   _initWeb3(){
     // Check if Web 3 has been injected by the browser
     // Use Browser/metamask version
-    if(typeof web3 == 'undefined'){
-      this.web3Provider = web3.currentProvider;
-      console.log('USING METAMASK', this.web3Provider);
-    // Use web3 from node_modules
-    // set provider to remote RPC
-    }else{
+    // if(typeof web3 == 'undefined'){
+    //   this.web3Provider = web3.currentProvider;
+    //   console.log('USING METAMASK', this.web3Provider);
+    // // Use web3 from node_modules
+    // // set provider to remote RPC
+    // }else{
       this.web3Provider =  new Web3.providers.HttpProvider('http://35.237.222.172:8111');
       
       console.log('USING REMOTE RPC', web3);
-    }
+    //}
 
     //this.web3 = new Web3(this.web3Provider);
     //console.log('web3 provider',this.web3Provider);

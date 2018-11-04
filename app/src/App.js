@@ -54,8 +54,8 @@ class App extends React.Component{
     // // Use web3 from node_modules
     // // set provider to remote RPC
     // }else{
-      this.web3Provider =  new Web3.providers.HttpProvider('http://35.237.222.172:8111');
-      
+      //this.web3Provider =  new Web3.providers.HttpProvider('http://35.237.222.172:8111');
+      window.web3 = new Web3(new Web3.providers.HttpProvider("http://35.237.222.172:8111"));
       console.log('USING REMOTE RPC', web3);
     //}
 
@@ -67,8 +67,8 @@ class App extends React.Component{
   // Read the balance of an account
   _readBalance(){
     return new Promise((resolve, reject)=>{
-      console.log('eth key', this.state.publicEthKey);
-      console.log(web3.isAddress(this.state.publicEthKey) );
+      console.log('eth key', this.state.publicEthKey, web3.isAddress);
+      console.log('is address', web3.isAddress("0x895B758229aFF6C0f95146A676bBF579aD7636aa") );
       web3.eth.getBalance(this.state.publicEthKey, (error, wei)=>{
         console.log('inside callback for getBalance, before conditional');
         if (!error) {console.log('bal');

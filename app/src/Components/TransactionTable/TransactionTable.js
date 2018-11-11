@@ -73,7 +73,7 @@ export default class TransactionTable extends React.Component{
         transactionEls = this.state.sent.map((trans, i)=>{
           
           if(trans){
-            const val = utils.toBN(trans.value);
+            const val = utils.toBN(trans.value.toString());
             console.log('TRA', trans);
             return (
               <tr key={`sent-${i}`}>

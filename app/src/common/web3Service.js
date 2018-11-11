@@ -5,6 +5,9 @@ const endpoint = `${API_ENDPOINT}web3/`;
 
 // Retrieve Transaction Data from Blockchain after hitting node backend
 const retrieveTransactionData = function(transArray){
+  transArray = transAwway.map(() =>{
+    return {"hash" : transArray.hash.trim(), "timestamp" : transArray.timestamp};
+  });
   return new Promise((resolve, reject) =>{
       return axios.post(`${endpoint}retrieve-transaction-data`, { transArray })
       .then((data) => {

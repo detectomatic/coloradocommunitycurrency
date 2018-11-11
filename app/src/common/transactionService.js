@@ -49,4 +49,6 @@ const saveNewHash = function(from, to, hash){
     });
 }
 
+
+
 export { retrieveSentHashes, retrieveReceivedHashes, saveNewHash }

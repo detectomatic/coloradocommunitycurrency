@@ -229,7 +229,7 @@ export default class TransactionTable extends React.Component{
 
   // When Component mounts, kick off the sequence of retrieving user transaction data
   componentDidMount() {
-    //this._retrieveTableData('sent');
+    this._retrieveTableData('sent');
     this.props.readBalance()
     .then((balance)=>{
       console.log('balance', balance);

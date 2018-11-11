@@ -20,7 +20,7 @@ const retrieveTransactionData = function(transArray){
 
 // Read Balance of account off blockchain after hitting node backend
 const readBalance = function(publicEthKey){
-  console.log('PEK',publicEthKey, publicEthKey.trim().length);
+  //console.log('PEK',publicEthKey, publicEthKey.trim().length);
   return new Promise((resolve, reject) =>{
       return axios.post(`${endpoint}read-balance`, { publicEthKey: publicEthKey.trim() })
       .then((data) => {

@@ -73,8 +73,8 @@ export default class TransactionTable extends React.Component{
         transactionEls = this.state.sent.map((trans, i)=>{
           
           if(trans){
-            const val = utils.toBN(trans.value.toString());
-            console.log('TRA', trans);
+            const val = utils.toBN(trans.value).toString();
+            console.log('TRA', val);
             return (
               <tr key={`sent-${i}`}>
                 <td className="date_cell">
@@ -118,8 +118,8 @@ export default class TransactionTable extends React.Component{
                 <td  className="amount_cell">
                   <div>
                     <strong className="amount_container">
-                      {console.log('uggggval', val)}
-                      $ { utils.fromWei(val.toString(), 'ether') }
+                      
+                      $ { utils.fromWei(val, 'ether') }
                     </strong>
                   </div>
                 </td>
@@ -179,7 +179,7 @@ export default class TransactionTable extends React.Component{
                   <div>
                     <strong className="amount_container">
                       
-                      $ { utils.fromWei(val.toString(), 'ether') }
+                      $ { utils.fromWei(val, 'ether') }
                     </strong>
                   </div>
                 </td>

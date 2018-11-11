@@ -118,8 +118,8 @@ export default class TransactionTable extends React.Component{
                 <td  className="amount_cell">
                   <div>
                     <strong className="amount_container">
-                      
-                      $ { utils.fromWei(val, 'ether') }
+                      {console.log('uggggval', val)}
+                      $ { utils.fromWei(val.toString(), 'ether') }
                     </strong>
                   </div>
                 </td>
@@ -179,7 +179,7 @@ export default class TransactionTable extends React.Component{
                   <div>
                     <strong className="amount_container">
                       
-                      $ { utils.fromWei(val, 'ether') }
+                      $ { utils.fromWei(val.toString(), 'ether') }
                     </strong>
                   </div>
                 </td>

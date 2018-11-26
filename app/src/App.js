@@ -55,8 +55,8 @@ class App extends React.Component{
     // Use web3 from node_modules
     // set provider to remote RPC
      }else{
-      //this.web3Provider =  new Web3.providers.HttpProvider('http://35.237.222.172:8111');
-      window.web3 = new Web3(new Web3.providers.HttpProvider("http://35.237.222.172:8111"));
+      //this.web3Provider =  new Web3.providers.HttpProvider('http://52.15.122.19:8111');
+      window.web3 = new Web3(new Web3.providers.HttpProvider("http://52.15.122.19:8111"));
       console.log('USING REMOTE RPC', web3);
     }
 
